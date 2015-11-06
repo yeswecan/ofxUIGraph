@@ -69,9 +69,6 @@ public:
             if (ofToInt(innards) > maxNum) innards = ofToString(maxNum);
             
             onNumberChange();
-//            o4->position = UIObject::fingerPositions[dgr->dragFinger] - o3->position - dgr->dragOffset;
-//            
-//            if (o4->position.x < 0) o4->position.x = 0;
             
         };
         dgr->gestureEnded = [&](UIGestureRecognizer *d) {

@@ -19,7 +19,6 @@
 #include "UIGestureRecognizer.h"
 #include "UIGestureRecognizerServer.h"
 
-
 class UIObject: public UIGestureRecognizerServer {
 public:
     //////// ***********  CALLBACKS  ***********  //////////
@@ -203,10 +202,13 @@ public:
         while ((!result) && (current_zIndex >= 0) ) {
             for (auto i: children) {
                 if ( (i->zIndex == current_zIndex) &&
-                    (pointInclusionTest(i, touchPosition - innerTransform))
+                    (pointInclusionTest(i, touchPosition - innerTransform) &&
+                     (i->visible))
                     ) {
                         i->lastTouched = ofGetElapsedTimeMillis();
                         i->lastTouchedPosition = touchPosition - i->position - innerTransform;
+                        // TODO: ^^ make it a per finger thing inside every object maybe?
+                        // could be useful for touch gesture recognizers
                     
                          if (type == TOUCH_DOWN) {
                             ofLog() << "touched DOWN " << i->name << " with zIndex = "<< current_zIndex;
@@ -216,7 +218,8 @@ public:
                                  i->gestureRecognizer->touchDown(touchPosition - i->position, fingerIndex);
                              }
                              
-                             if (!i->touchBroadcast(touchPosition - i->position, type, fingerIndex, level + 1)) {
+                             if ((!i->touchBroadcast(touchPosition - i->position, type, fingerIndex, level + 1)) ||
+                                  (i->children.size() == 0)) {
                                 ofLog() << "touchbroadcast = false";
                                 if ((i->touchDown()) || (i->touchDownC(i))) {
                                     ofLog() << " --- touch down ended up inside " << i->name;
@@ -226,12 +229,13 @@ public:
                                 }
                              } else {
                                 ofLog() << "touch down ended up inside children of " << i->name;
+                                ofLog() << i->name << " has " << i->children.size() << " children";
                                 return true;
                              }
                         }
 
                         if (type == TOUCH_DRAG) {
-                            ofLog() << "touched DRAG " << i->name << " with zIndex = "<< current_zIndex;
+//                            ofLog() << "touched DRAG " << i->name << " with zIndex = "<< current_zIndex;
                             
                             if (i->gestureRecognizer != NULL) {
                                 i->gestureRecognizer->offset = fingerPositions[fingerIndex] - (touchPosition - i->position);
@@ -239,7 +243,7 @@ public:
                             }
                             
                             if (!i->touchBroadcast(touchPosition - i->position, type, fingerIndex, level + 1)) {
-                                ofLog() << "touchbroadcast = false";
+//                                ofLog() << "touchbroadcast = false";
 //                                if ((i->touchDown()) || (i->touchDownC(i))) {
       //                              ofLog() << " --- touch down ended up inside " << i->name;
                                     i->registerEvent(TOUCH_DRAG);
@@ -400,6 +404,12 @@ public:
         position = pos;
         size = siz;
     }
+
+    UIObject (string nam) {
+        init();
+        name = nam;
+    }
+
     
     UIObject (string nam, ofPoint pos, ofPoint siz) {
 		init();

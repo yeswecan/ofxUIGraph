@@ -9,7 +9,7 @@ void ofApp::setup(){
     };
     ofLog() << "ui size = " << ui->size;
     
-    o1 = ui->addChild(new UIObject("o1", ofPoint(100, 100), ofPoint(150, 75)));
+    o1 = ui->addChild(new UIObject("o1"));
     o1->draw = [&](UIObject *o) {
         ofSetColor(255, 0, 0);
         ofRect(0, 0, o->size.x, o->size.y);
@@ -26,7 +26,7 @@ void ofApp::setup(){
     ConstraintSolver::addSizeConstraint(o1, s1);
     ConstraintSolver::addPositionConstraint(o1, p1);
     
-    o2 = ui->addChild(new UIObject("o2", ofPoint(100, 100), ofPoint(150, 75)));
+    o2 = ui->addChild(new UIObject("o2"));
     o2->draw = [&](UIObject *o) {
         ofSetColor(0, 255, 0);
         ofRect(0, 0, o->size.x, o->size.y);
@@ -43,9 +43,9 @@ void ofApp::setup(){
     ConstraintSolver::addPositionConstraint(o2, p2);
     
     
-    o3 = ui->addChild(new UIObject("o3", ofPoint(0,0), ofPoint(100, 100)));
+    o3 = ui->addChild(new UIObject("o3"));
     o3->draw = [&](UIObject* o) {
-        ofSetColor(150, 75, 0);
+        ofSetColor(150, 75, 0, 200);
         ofRect(0,0,o->size.x,o->size.y);
     };
     ConstraintSolver::addSizeConstraint(o3,
@@ -64,7 +64,7 @@ void ofApp::setup(){
         ofRect(10,10,o->size.x - 20,o->size.y - 20);
         
         ofSetColor(255);
-        ofDrawBitmapString(o->parent->name, 30, 30);
+        ofDrawBitmapString("draggable", 11, 20);
     };
     
     //// Gesture stuff for o4
@@ -89,19 +89,34 @@ void ofApp::setup(){
     //// Editables
     
     e = (EditableField*)o3->addChild(new EditableField("editable", ofPoint(300, 100), ofPoint(130, 30)));
-    e2 = (EditableField*)o3->addChild(new EditableField("editable 2", ofPoint(300, 150), ofPoint(130, 30)));
-    e2->innards = "string";
     e->innards = "125";
     e->numbersOnly = true;
     e->setupForDragging(15, 1000);
     e->onNumberChange = [&]() {
-//        ofLog() << e->innards;
+        
     };
+
+    
+    e2 = (EditableField*)o3->addChild(new EditableField("editable 2", ofPoint(300, 150), ofPoint(130, 30)));
+    e2->innards = "string";
+
+    
+    //// Dropdown
+    ddl = (UIDropDownList*)o3->addChild(new UIDropDownList("dropdown", &dropdownOptions));
+    ConstraintSolver::addPositionConstraint(ddl, 260, 260);
+    ConstraintSolver::addSizeConstraint(ddl, 150, 30);
+    for (int i = 0; i < 70; i++) {
+        dropdownOptions.push_back(ofToString(ofRandom(50000)));
+    }
+    ddl->rowHeight = 30;
     
     ///////// Setup
 
     UIKeyboardEventReciever::initializeEditableFields();
     ConstraintSolver::solveConstraints();
+    
+    
+    ofSetEscapeQuitsApp(false);
 }
 
 //--------------------------------------------------------------
@@ -120,6 +135,12 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     UIKeyboardEventReciever::broadcastKeyPressed(key);
+    
+    if (key == 27) {
+        UIKeyboardEventReciever::unfocusKeyboardRecievers();
+    }
+    
+    ofLog() << key;
 }
 
 //--------------------------------------------------------------

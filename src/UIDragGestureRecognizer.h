@@ -15,25 +15,30 @@ class UIDragGestureRecognizer: public UIGestureRecognizer {
 public:
     UIDragGestureRecognizer() {
         dragStarted = false;
+        gestureAbandoned = false;
+        lazyMode = false;
     }
     
     // Return true if UIObject shouldn't broadcast further
     bool touchDown(ofPoint point, int finger) {
         dragFinger = finger;
+        gestureAbandoned = false;
+
+        if ((!dragStarted)&&(!gestureAbandoned)) {
+            UIGestureRecognizerServer::captureFinger(finger, this);
+            dragStarted = true;
+            
+            dragOffset = UIObject::fingerPositions[finger] - offset;
+            gestureStarted(this);
+        }
     };
     
     // The same as above
     bool touchDrag(ofPoint point, int finger) {
-        if (!dragStarted) {
-            UIGestureRecognizerServer::captureFinger(finger, this);
-            gestureStarted(this);
-            dragStarted = true;
-            
-            dragOffset = UIObject::fingerPositions[finger] - offset;
-        }
         
 //        ofLog() << "drag update!";
-        gestureUpdated(this);
+        if (!gestureAbandoned)
+            gestureUpdated(this);
     };
     
     // The same too
@@ -44,10 +49,19 @@ public:
             dragStarted = false;
         }
     };
+    
+    void stop() {
+        if (dragStarted) {
+            UIGestureRecognizerServer::releaseFinger(dragFinger);
+            gestureEnded(this);
+            dragStarted = false;
+            gestureAbandoned = true;
+        }
+    }
 
     int dragFinger;
     
-    bool dragStarted;
+    bool dragStarted, gestureAbandoned, lazyMode;
     
     ofPoint dragOffset;
 };

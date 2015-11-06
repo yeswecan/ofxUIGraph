@@ -112,6 +112,11 @@ public:
         y = Y;
     }
     
+    UIConstraint2D(float X, float Y) {
+        x = UIConstraint(X);
+        y = UIConstraint(Y);
+    }
+    
     UIConstraint x, y;
     
     ofPoint solve() {
@@ -137,11 +142,27 @@ public:
             i->first->size = sizeConstraints[i->first].solve();
         }
     }
+
+    static void addPositionConstraint(UIObject *obj, float x, float y) {
+        positionConstraints[obj] = UIConstraint2D(x, y);
+    }
+
+    static void addPositionConstraint(UIObject *obj, ofPoint position) {
+        positionConstraints[obj] = UIConstraint2D(position.x, position.y);
+    }
     
     static void addPositionConstraint(UIObject *obj, UIConstraint2D cc) {
         positionConstraints[obj] = cc;
     }
     
+    static void addSizeConstraint(UIObject *obj, float x, float y) {
+        sizeConstraints[obj] = UIConstraint2D(x, y);
+    }
+
+    static void addSizeConstraint(UIObject *obj, ofPoint size) {
+        positionConstraints[obj] = UIConstraint2D(size.x, size.y);
+    }
+
     static void addSizeConstraint(UIObject *obj, UIConstraint2D cc) {
         sizeConstraints[obj] = cc;
     }

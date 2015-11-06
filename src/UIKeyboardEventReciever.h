@@ -10,6 +10,7 @@ public:
     
     virtual void keyPressed(int key) {};
     virtual void keyReleased(int key) {};
+    virtual void lostFocus() {};
     
     // Static part
     static void broadcastKeyPressed(int key) {
@@ -28,10 +29,12 @@ public:
     static UIKeyboardEventReciever *focusedObject;
     
     static void focusOnObject(UIKeyboardEventReciever *o) {
+        if (focusedObject != NULL) focusedObject->lostFocus();
         focusedObject = o;
     }
     
     static void unfocusKeyboardRecievers() {
+        if (focusedObject != NULL) focusedObject->lostFocus();
         focusedObject = NULL;
     }
     

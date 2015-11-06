@@ -29,4 +29,8 @@ class ofApp : public ofBaseApp{
     UIConstraint2D p1, s1, p2, s2;
     
     EditableField *e, *e2;
+    
+    UIDropDownList *ddl;
+    
+    vector<string> dropdownOptions;
 };
