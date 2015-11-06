@@ -105,7 +105,7 @@ void ofApp::setup(){
     ddl = (UIDropDownList*)o3->addChild(new UIDropDownList("dropdown", &dropdownOptions));
     ConstraintSolver::addPositionConstraint(ddl, 260, 260);
     ConstraintSolver::addSizeConstraint(ddl, 150, 30);
-    for (int i = 0; i < 70; i++) {
+    for (int i = 0; i < 80; i++) {
         dropdownOptions.push_back(ofToString(ofRandom(50000)));
     }
     ddl->rowHeight = 30;

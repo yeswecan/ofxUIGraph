@@ -77,16 +77,13 @@ public:
         openedDropDownList->draw = [&](UIObject *o) {
             ofPushMatrix();
             
-            float maximum = 20 * values->size() - openedDropDownList->size.y;
+            float maximum = rowHeight * values->size() - openedDropDownList->size.y;
             // TODO:
             // 1) translate to the point where the selected object lies
             //    when you use keys
 
             ofTranslate(0, o->innerTransform.y);
             
-//            ofTranslate(o->innerTransform);
-            
-//            ofRect(0, 0, o->size.x, o->size.y);
             
             for (int i = 0; i < values->size(); i++) {
                 ofSetColor(0, 0, 0, 200);
@@ -103,15 +100,14 @@ public:
             
             ofPopMatrix();
 
-            if (maximum > openedDropDownList->size.y) {
+            if ((rowHeight * values->size()) > openedDropDownList->size.y) {
                 // drawing scroll bar
                 
-                float size = (openedDropDownList->size.y / maximum) * openedDropDownList->size.y;
+                float size = ( openedDropDownList->size.y / (rowHeight * values->size()) ) * openedDropDownList->size.y;
                 float offset = -(openedDropDownList->innerTransform.y / (maximum)) * (openedDropDownList->size.y - size);
 
                 ofRect(openedDropDownList->size.x - 20, offset, 20, size);
-            };
-            
+            }
         };
         
         openedDropDownList->touchDownC = [&](UIObject *o)->bool {
@@ -141,15 +137,11 @@ public:
             ofPoint offset = UIObject::fingerPositions[dgr->dragFinger] - dgr->dragOffset - openedDropDownList->position - ofPoint(rowHeight);
 //            ofLog() << (initialTouchPosition - offset);
             
-            float moveAmount = offset.y * (maximum / openedDropDownList->size.y);
+            float moveAmount = offset.y * ((rowHeight * values->size()) / openedDropDownList->size.y);
             float newInnerTransform = initialInnerTransform.y - moveAmount;
             openedDropDownList->innerTransform.y =  newInnerTransform;
             if (openedDropDownList->innerTransform.y < -maximum) openedDropDownList->innerTransform.y = -maximum;
             if (openedDropDownList->innerTransform.y > 0) openedDropDownList->innerTransform.y = 0;
-//
-//            if (o4->position.x < 0) o4->position.x = 0;
-//            if (o4->position.y < 0) o4->position.y = 0;
-            
         };
         dgr->gestureEnded = [&](UIGestureRecognizer *d) {
             ofLog() << "gesture ended!";
