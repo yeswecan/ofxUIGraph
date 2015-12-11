@@ -1,62 +1,50 @@
 #include "ofApp.h"
 
+using namespace UIGraph;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ui = new UIObject("canvas", ofPoint(0,0), ofPoint(ofGetWidth(), ofGetHeight()));
-    ui->draw = [&](UIObject *o) {
-        ofSetColor(255);
-        ofLine(0, 0, o->size.x, o->size.y);
-    };
-    ofLog() << "ui size = " << ui->size;
     
-    o1 = ui->addChild(new UIObject("o1"));
+    DrawArgs dArgs;
+    dArgs = {new UIObject(), ofPoint(0), ofPoint(300)};
+    
+    font.loadFont("3_font.ttf", 15);
+    
+    o1 = ui.addChild(new UIObject("o1"));
     o1->draw = [&](UIObject *o) {
         ofSetColor(255, 0, 0);
-        ofRect(0, 0, o->size.x, o->size.y);
+        ofRect(0, 0, o1->size.x, o1->size.y);
     };
+    o1->setSize(150, 75);
+    o1->setPosition(o1->getConstraintInsideRight(ui, 50),
+                    o1->getConstraintInsideBottom(ui, 50));
     
-    o1->touchDownC = [&](UIObject *o)->bool {
-        return true;
-    };
     
-    s1 = UIConstraint2D(UIConstraint(150),
-                        UIConstraint(75));
-    p1 = UIConstraint2D(UIConstraint(UIConstraint::INSIDE_RIGHT, ui, o1, 50),
-                        UIConstraint(UIConstraint::INSIDE_BOTTOM, ui, o1, 50));
-    ConstraintSolver::addSizeConstraint(o1, s1);
-    ConstraintSolver::addPositionConstraint(o1, p1);
-    
-    o2 = ui->addChild(new UIObject("o2"));
+    o2 = ui.addChild(new UIObject("o2"));
     o2->draw = [&](UIObject *o) {
         ofSetColor(0, 255, 0);
         ofRect(0, 0, o->size.x, o->size.y);
+        ofSetColor(255);
+        ofDrawBitmapString("o2", 10, 10);
     };
-    o2->touchDownC = [&](UIObject *o)->bool {
-        return true;
-    };
-    s2 = UIConstraint2D(UIConstraint(100),
-                      UIConstraint(75));
-    p2 = UIConstraint2D(UIConstraint(UIConstraint::LEFT, o1, o2, 50),
-                        UIConstraint(UIConstraint::PARALLEL_TO_TOP, o1, o2, 0)
-                        );
-    ConstraintSolver::addSizeConstraint(o2, s2);
-    ConstraintSolver::addPositionConstraint(o2, p2);
+    o2->setSize(100, 75);
+    o2->setPosition(o2->getConstraintLeft(o1, 50),
+                    o2->getConstraintParallelToTop(o1, 0));
     
     
-    o3 = ui->addChild(new UIObject("o3"));
-    o3->draw = [&](UIObject* o) {
+    
+    panel = ui.addChild(new UIObject("panel"));
+    panel->draw = [&](UIObject* o) {
         ofSetColor(150, 75, 0, 200);
         ofRect(0,0,o->size.x,o->size.y);
     };
-    ConstraintSolver::addSizeConstraint(o3,
-                        UIConstraint2D(UIConstraint(UIConstraint::SIZE_X_MINUS_ARGUMENT, ui, 450),
-                                       UIConstraint(UIConstraint::SIZE_Y_MINUS_ARGUMENT, ui, 100)
-                                       ));
-    ConstraintSolver::addPositionConstraint(o3, UIConstraint2D(UIConstraint(25),UIConstraint(25)));
-    o3->useFbo = true;
-    o3->setFboSize(ofPoint(ofGetWidth(), ofGetHeight()));
+    panel->setSize(panel->getConstraintSizeXMinusArgument(ui, 450),
+                   panel->getConstraintSizeYMinusArgument(ui, 100));
+    panel->setPosition(UIConstraint(25),UIConstraint(ofRandom(25)));
+    panel->useFbo = true;
+    panel->setFboSize(ofPoint(ofGetWidth(), ofGetHeight()));
     
-    o4 = o3->addChild(new UIObject("o4", ofPoint(75, 75), ofPoint(100, 100)));
+    o4 = panel->addChild(new UIObject("o4", ofPoint(75, 75), ofPoint(100, 100)));
     o4->draw = [&](UIObject *o) {
         ofSetColor(100);
         ofRect(0,0,o->size.x,o->size.y);
@@ -65,6 +53,7 @@ void ofApp::setup(){
         
         ofSetColor(255);
         ofDrawBitmapString("draggable", 11, 20);
+        ofDrawBitmapString(o->getTopParent()->name, 11, 30);
     };
     
     //// Gesture stuff for o4
@@ -75,7 +64,7 @@ void ofApp::setup(){
     };
     dgr->gestureUpdated = [&](UIGestureRecognizer *d) {
         UIDragGestureRecognizer *dgr = (UIDragGestureRecognizer*)d;
-        o4->position = UIObject::fingerPositions[dgr->dragFinger] - o3->position - dgr->dragOffset;
+        o4->position = UIObject::fingerPositions[dgr->dragFinger] - panel->position - dgr->dragOffset;
         
         if (o4->position.x < 0) o4->position.x = 0;
         if (o4->position.y < 0) o4->position.y = 0;
@@ -86,9 +75,13 @@ void ofApp::setup(){
     
     o4->gestureRecognizer = dgr;
     
+    // TODO: zIndex manupulations lead to partially inverted drawing coords
+//    o4->getToTheFront();
+//    o4->zIndex = 81;
+    
     //// Editables
     
-    e = (EditableField*)o3->addChild(new EditableField("editable", ofPoint(300, 100), ofPoint(130, 30)));
+    e = (EditableField*)panel->addChild(new EditableField("editable", ofPoint(300, 100), ofPoint(130, 30)));
     e->innards = "125";
     e->numbersOnly = true;
     e->setupForDragging(15, 1000);
@@ -97,14 +90,15 @@ void ofApp::setup(){
     };
 
     
-    e2 = (EditableField*)o3->addChild(new EditableField("editable 2", ofPoint(300, 150), ofPoint(130, 30)));
+    e2 = (EditableField*)panel->addChild(new EditableField("editable 2", ofPoint(300, 150), ofPoint(130, 30)));
     e2->innards = "string";
 
-    
+
     //// Dropdown
-    ddl = (UIDropDownList*)o3->addChild(new UIDropDownList("dropdown", &dropdownOptions));
-    ConstraintSolver::addPositionConstraint(ddl, 260, 260);
-    ConstraintSolver::addSizeConstraint(ddl, 150, 30);
+    ddl = (UIDropDownList*)panel->addChild(new UIDropDownList("dropdown", &dropdownOptions));
+    ddl->font = &font;
+    UIConstraintSolver::addPositionConstraint(ddl, 260, 260);
+    UIConstraintSolver::addSizeConstraint(ddl, 150, 30);
     for (int i = 0; i < 80; i++) {
         dropdownOptions.push_back(ofToString(ofRandom(50000)));
     }
@@ -112,29 +106,24 @@ void ofApp::setup(){
     
     ///////// Setup
 
-    UIKeyboardEventReciever::initializeEditableFields();
-    ConstraintSolver::solveConstraints();
     
-    
-    ofSetEscapeQuitsApp(false);
+    ofSetEscapeQuitsApp(true);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    ConstraintSolver::solveConstraints();
-    ui->updateCycle();
-
+    ui.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofClear(0);
-    ui->drawCycle();
+    ui.draw();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    UIKeyboardEventReciever::broadcastKeyPressed(key);
+//    UIKeyboardEventReciever::broadcastKeyPressed(key);
     
     if (key == 27) {
         UIKeyboardEventReciever::unfocusKeyboardRecievers();
@@ -143,43 +132,4 @@ void ofApp::keyPressed(int key){
     ofLog() << key;
 }
 
-//--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-    UIKeyboardEventReciever::broadcastKeyReleased(key);
-}
 
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-    ui->touchBroadcast(ofPoint(x, y), UIObject::TOUCH_DRAG);
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-    ui->touchBroadcast(ofPoint(x, y), UIObject::TOUCH_DOWN);
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-    ui->touchBroadcast(ofPoint(x, y), UIObject::TOUCH_UP);
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-    ui->size = ofPoint(w, h);
-    
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
-}

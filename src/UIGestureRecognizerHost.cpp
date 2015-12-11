@@ -9,4 +9,4 @@
 #include <stdio.h>
 #include "UIGestureRecognizer.h"
 
-std::map<int, UIGestureDataReciever*> UIGestureRecognizerServer::capturedFingers;
+std::map<int, UIGestureDataReciever*> UIGestureRecognizerHost::capturedFingers;

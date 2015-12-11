@@ -11,36 +11,49 @@
 
 #include <stdio.h>
 #include "ofMain.h"
-#include "UIGestureRecognizerServer.h"
+#include "UIGestureRecognizerHost.h"
 #include "UIGestureDataReciever.h"
+
+namespace UIGraph {
 
 class UIGestureRecognizer: public UIGestureDataReciever {
 public:
-    UIGestureRecognizer(){}
+    UIGestureRecognizer(){
+	    gestureStarted = [](UIGestureRecognizer* g) {};
+	    gestureUpdated = [](UIGestureRecognizer* g) {};
+		gestureEnded = [](UIGestureRecognizer* g) {};
+
+	}
     
     
     // Return true if UIObject shouldn't broadcast further
     virtual bool touchDown(ofPoint point, int finger) {
-        
+		return true;        
     };
 
     // The same as above
     virtual bool touchDrag(ofPoint point, int finger) {
-        
+		return true;        
     };
     
     // The same too
     virtual bool touchUp(ofPoint point, int finger) {
-        
+		return true;        
     };
+    
+    virtual void mouseMove(ofPoint point) {
+        
+    }
 
     /// State
     
-    function<void(UIGestureRecognizer*)> gestureStarted = [](UIGestureRecognizer* g) {};
-    function<void(UIGestureRecognizer*)> gestureUpdated = [](UIGestureRecognizer* g) {};
-    function<void(UIGestureRecognizer*)> gestureEnded = [](UIGestureRecognizer* g) {};
+    function<void(UIGestureRecognizer*)> gestureStarted;
+    function<void(UIGestureRecognizer*)> gestureUpdated;
+    function<void(UIGestureRecognizer*)> gestureEnded;
   
     ofPoint offset;
 };
+    
+}
 
 #endif /* UIGestureRecognizer_hpp */

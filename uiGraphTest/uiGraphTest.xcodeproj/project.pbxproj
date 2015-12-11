@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1572352F1C1B0EBC00F2FF82 /* UIAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1572352E1C1B0D8E00F2FF82 /* UIAnimation.cpp */; };
+		157235301C1B0EC100F2FF82 /* UIAnimation.h in Sources */ = {isa = PBXBuildFile; fileRef = D548061DBA90827849F311D6 /* UIAnimation.h */; };
 		15C9BBD71BE84E2C004DB532 /* UIObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15C9BBD61BE84E2C004DB532 /* UIObject.cpp */; settings = {ASSET_TAGS = (); }; };
-		15C9BBDA1BE92045004DB532 /* UIConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15C9BBD91BE92045004DB532 /* UIConstraint.cpp */; settings = {ASSET_TAGS = (); }; };
+		15C9BBDA1BE92045004DB532 /* UIConstraintSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15C9BBD91BE92045004DB532 /* UIConstraintSolver.cpp */; settings = {ASSET_TAGS = (); }; };
 		15C9BBE01BEA1FBE004DB532 /* UIGestureRecognizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15C9BBDF1BEA1FBE004DB532 /* UIGestureRecognizer.cpp */; settings = {ASSET_TAGS = (); }; };
-		15C9BBE51BEA2C6D004DB532 /* UIGestureRecognizerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15C9BBE41BEA2C6D004DB532 /* UIGestureRecognizerServer.cpp */; settings = {ASSET_TAGS = (); }; };
+		15C9BBE51BEA2C6D004DB532 /* UIGestureRecognizerHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15C9BBE41BEA2C6D004DB532 /* UIGestureRecognizerHost.cpp */; settings = {ASSET_TAGS = (); }; };
 		15ED7B231BEA68D200955123 /* UIKeyboardEventReciever.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15ED7B221BEA68D200955123 /* UIKeyboardEventReciever.cpp */; settings = {ASSET_TAGS = (); }; };
 		5A4349E9754D6FA14C0F2A3A /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC5DA1C87211D4F6377DA719 /* tinyxmlparser.cpp */; };
 		63B57AC5BF4EF088491E0317 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50DF87D612C5AAE17AAFA6C0 /* ofxXmlSettings.cpp */; };
@@ -76,13 +78,18 @@
 		054000B67034A5EBE55476FF /* UIObject.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = UIObject.h; path = ../../../addons/ofxUIGraph/src/UIObject.h; sourceTree = SOURCE_ROOT; };
 		0CD3145A0F2A0E5266668B1B /* value.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = value.h; path = ../../../addons/ofxJSON/libs/jsoncpp/include/json/value.h; sourceTree = SOURCE_ROOT; };
 		0F867B04BF36A560C2493C09 /* json_value.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = json_value.cpp; path = ../../../addons/ofxJSON/libs/jsoncpp/src/json_value.cpp; sourceTree = SOURCE_ROOT; };
+		1572352E1C1B0D8E00F2FF82 /* UIAnimation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UIAnimation.cpp; path = ../src/UIAnimation.cpp; sourceTree = "<group>"; };
+		158DACE61C11BF9400C9424A /* UIShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UIShape.h; path = ../src/UIShape.h; sourceTree = "<group>"; };
+		158DACE71C11D00600C9424A /* UIConstraintSolver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UIConstraintSolver.h; path = ../src/UIConstraintSolver.h; sourceTree = "<group>"; };
+		158DACE81C11D61200C9424A /* UICanvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UICanvas.h; path = ../src/UICanvas.h; sourceTree = "<group>"; };
+		15BE7E071C15F03C00140FBE /* ofxLiquidEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxLiquidEvent.h; sourceTree = "<group>"; };
 		15C9BBD61BE84E2C004DB532 /* UIObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIObject.cpp; path = ../src/UIObject.cpp; sourceTree = "<group>"; };
 		15C9BBD81BE8DDB9004DB532 /* UIConstraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UIConstraint.h; path = ../src/UIConstraint.h; sourceTree = "<group>"; };
-		15C9BBD91BE92045004DB532 /* UIConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIConstraint.cpp; path = ../src/UIConstraint.cpp; sourceTree = "<group>"; };
+		15C9BBD91BE92045004DB532 /* UIConstraintSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIConstraintSolver.cpp; path = ../src/UIConstraintSolver.cpp; sourceTree = "<group>"; };
 		15C9BBDC1BEA1C64004DB532 /* UIGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIGestureRecognizer.h; path = ../src/UIGestureRecognizer.h; sourceTree = "<group>"; };
-		15C9BBDE1BEA1DBE004DB532 /* UIGestureRecognizerServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UIGestureRecognizerServer.h; path = ../src/UIGestureRecognizerServer.h; sourceTree = "<group>"; };
+		15C9BBDE1BEA1DBE004DB532 /* UIGestureRecognizerHost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UIGestureRecognizerHost.h; path = ../src/UIGestureRecognizerHost.h; sourceTree = "<group>"; };
 		15C9BBDF1BEA1FBE004DB532 /* UIGestureRecognizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIGestureRecognizer.cpp; path = ../src/UIGestureRecognizer.cpp; sourceTree = "<group>"; };
-		15C9BBE41BEA2C6D004DB532 /* UIGestureRecognizerServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIGestureRecognizerServer.cpp; path = /Users/zebra/Developer/openFrameworks/openFrameworks/libs/openFrameworksCompiled/project/osx/../../../../addons/ofxUIGraph/src/UIGestureRecognizerServer.cpp; sourceTree = "<absolute>"; };
+		15C9BBE41BEA2C6D004DB532 /* UIGestureRecognizerHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIGestureRecognizerHost.cpp; path = /Users/zebra/Developer/openFrameworks/openFrameworks/addons/ofxUIGraph/src/UIGestureRecognizerHost.cpp; sourceTree = "<absolute>"; };
 		15C9BBE61BEA2C71004DB532 /* UIGestureDataReciever.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UIGestureDataReciever.h; path = /Users/zebra/Developer/openFrameworks/openFrameworks/libs/openFrameworksCompiled/project/osx/../../../../addons/ofxUIGraph/src/UIGestureDataReciever.h; sourceTree = "<absolute>"; };
 		15C9BBE71BEA3290004DB532 /* UIDragGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UIDragGestureRecognizer.h; path = ../src/UIDragGestureRecognizer.h; sourceTree = "<group>"; };
 		15ED7B211BEA59F500955123 /* UIKeyboardEventReciever.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UIKeyboardEventReciever.h; path = ../src/UIKeyboardEventReciever.h; sourceTree = "<group>"; };
@@ -118,7 +125,7 @@
 		E4B69B5B0A3A1756003C02F2 /* uiGraphTestDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uiGraphTestDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofApp.cpp; path = src/ofApp.cpp; sourceTree = SOURCE_ROOT; };
-		E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ofApp.h; path = src/ofApp.h; sourceTree = SOURCE_ROOT; };
+		E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofApp.h; path = src/ofApp.h; sourceTree = SOURCE_ROOT; };
 		E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = "openFrameworks-Info.plist"; sourceTree = "<group>"; };
 		E4C2424410CC5A17004149E2 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		E4C2424510CC5A17004149E2 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -161,6 +168,62 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1572352B1C1B0D2200F2FF82 /* input */ = {
+			isa = PBXGroup;
+			children = (
+				15C9BBDF1BEA1FBE004DB532 /* UIGestureRecognizer.cpp */,
+				15ED7B211BEA59F500955123 /* UIKeyboardEventReciever.h */,
+				15C9BBE71BEA3290004DB532 /* UIDragGestureRecognizer.h */,
+				15C9BBE41BEA2C6D004DB532 /* UIGestureRecognizerHost.cpp */,
+				15C9BBDC1BEA1C64004DB532 /* UIGestureRecognizer.h */,
+				15C9BBE61BEA2C71004DB532 /* UIGestureDataReciever.h */,
+				15ED7B221BEA68D200955123 /* UIKeyboardEventReciever.cpp */,
+				15C9BBDE1BEA1DBE004DB532 /* UIGestureRecognizerHost.h */,
+			);
+			name = input;
+			sourceTree = "<group>";
+		};
+		1572352C1C1B0D5100F2FF82 /* widgets */ = {
+			isa = PBXGroup;
+			children = (
+				15FABF5A1BEA593A00FE721F /* UIDropDownList.h */,
+			);
+			name = widgets;
+			sourceTree = "<group>";
+		};
+		1572352D1C1B0D5E00F2FF82 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				D548061DBA90827849F311D6 /* UIAnimation.h */,
+				1572352E1C1B0D8E00F2FF82 /* UIAnimation.cpp */,
+				054000B67034A5EBE55476FF /* UIObject.h */,
+				15C9BBD61BE84E2C004DB532 /* UIObject.cpp */,
+				15C9BBD91BE92045004DB532 /* UIConstraintSolver.cpp */,
+				158DACE71C11D00600C9424A /* UIConstraintSolver.h */,
+				158DACE81C11D61200C9424A /* UICanvas.h */,
+				15C9BBD81BE8DDB9004DB532 /* UIConstraint.h */,
+				158DACE61C11BF9400C9424A /* UIShape.h */,
+			);
+			name = core;
+			sourceTree = "<group>";
+		};
+		15BE7E051C15F03C00140FBE /* ofxLiquidEvent */ = {
+			isa = PBXGroup;
+			children = (
+				15BE7E061C15F03C00140FBE /* src */,
+			);
+			name = ofxLiquidEvent;
+			sourceTree = "<group>";
+		};
+		15BE7E061C15F03C00140FBE /* src */ = {
+			isa = PBXGroup;
+			children = (
+				15BE7E071C15F03C00140FBE /* ofxLiquidEvent.h */,
+			);
+			name = src;
+			path = ../../ofxLiquidEvent/src;
+			sourceTree = "<group>";
+		};
 		1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */ = {
 			isa = PBXGroup;
 			children = (
@@ -199,21 +262,10 @@
 		3C899072E0094897659EA941 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				15ED7B211BEA59F500955123 /* UIKeyboardEventReciever.h */,
-				15FABF5A1BEA593A00FE721F /* UIDropDownList.h */,
-				15C9BBE71BEA3290004DB532 /* UIDragGestureRecognizer.h */,
-				15C9BBE41BEA2C6D004DB532 /* UIGestureRecognizerServer.cpp */,
-				15C9BBDC1BEA1C64004DB532 /* UIGestureRecognizer.h */,
-				15C9BBE61BEA2C71004DB532 /* UIGestureDataReciever.h */,
-				15ED7B221BEA68D200955123 /* UIKeyboardEventReciever.cpp */,
-				15C9BBDE1BEA1DBE004DB532 /* UIGestureRecognizerServer.h */,
-				15C9BBD91BE92045004DB532 /* UIConstraint.cpp */,
-				15C9BBD81BE8DDB9004DB532 /* UIConstraint.h */,
+				1572352D1C1B0D5E00F2FF82 /* core */,
+				1572352C1C1B0D5100F2FF82 /* widgets */,
+				1572352B1C1B0D2200F2FF82 /* input */,
 				60690455B21DCF9C6D26C52B /* ofxUIGraph.h */,
-				D548061DBA90827849F311D6 /* UIAnimation.h */,
-				054000B67034A5EBE55476FF /* UIObject.h */,
-				15C9BBDF1BEA1FBE004DB532 /* UIGestureRecognizer.cpp */,
-				15C9BBD61BE84E2C004DB532 /* UIObject.cpp */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -268,6 +320,7 @@
 				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
 				2865DAEF86B1907A704CA70B /* ofxJSON */,
 				3C05DE2C5922884E2EA2EB5D /* ofxUIGraph */,
+				15BE7E051C15F03C00140FBE /* ofxLiquidEvent */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -354,10 +407,10 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				15ED7B241BEA6A0D00955123 /* EditableField.h */,
-				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -466,7 +519,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				15C9BBDA1BE92045004DB532 /* UIConstraint.cpp in Sources */,
+				15C9BBDA1BE92045004DB532 /* UIConstraintSolver.cpp in Sources */,
 				15C9BBD71BE84E2C004DB532 /* UIObject.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
@@ -477,10 +530,12 @@
 				9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */,
 				5A4349E9754D6FA14C0F2A3A /* tinyxmlparser.cpp in Sources */,
 				BEDFEE7400C58EA4E412B757 /* ofxJSONElement.cpp in Sources */,
-				15C9BBE51BEA2C6D004DB532 /* UIGestureRecognizerServer.cpp in Sources */,
+				15C9BBE51BEA2C6D004DB532 /* UIGestureRecognizerHost.cpp in Sources */,
 				7CED9FCC5BF62C4915C8D09F /* json_reader.cpp in Sources */,
 				AE32F1807796B1050E082651 /* json_value.cpp in Sources */,
 				9B06C5CAE570B630A97E51C3 /* json_writer.cpp in Sources */,
+				157235301C1B0EC100F2FF82 /* UIAnimation.h in Sources */,
+				1572352F1C1B0EBC00F2FF82 /* UIAnimation.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -665,6 +720,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -751,6 +807,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

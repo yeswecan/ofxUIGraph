@@ -1,16 +1,11 @@
-//
-//  EditableField.h
-//  uiGraphTest
-//
-//  Created by zebra on 04.11.15.
-//
-//
 
 #ifndef EditableField_h
 #define EditableField_h
 
 #include "UIObject.h"
 #include "UIKeyboardEventReciever.h"
+
+using namespace UIGraph;
 
 class EditableField: public UIObject, UIKeyboardEventReciever {
 public:
@@ -22,7 +17,7 @@ public:
         useFbo = true;
         
         touchDownC = [&](UIObject *o)->bool {
-            ofLog() << "FOCUSING ON ME";
+//            ofLog() << "FOCUSING ON ME";
             focusOnObject(this);
             return true;
         };
@@ -79,6 +74,12 @@ public:
     }
     
     void keyPressed(int key) {
+        ofLog() << key;
+        
+        if (key == 13) {
+            unfocusKeyboardRecievers();
+        }
+        
         if (key == 127) { // backspace
             if (innards.length() > 0) {
                 innards.erase(innards.length() - 1, 1);

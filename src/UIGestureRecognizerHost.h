@@ -14,14 +14,13 @@
 #include "ofMain.h"
 
 
-class UIGestureRecognizerServer {
+class UIGestureRecognizerHost {
 public:
-    UIGestureRecognizerServer() {
+    UIGestureRecognizerHost() {
         for (int i = 0; i < 10; i++) {
             capturedFingers[i] = NULL;
         }
     }
-    
     
     static std::map<int, UIGestureDataReciever*> capturedFingers;
 

@@ -3,13 +3,19 @@ ofxUIGraph
 
 Introduction
 ------------
-This addon manages complex UI hierarchy within the of-app asynchronously. Here every object has its own draw/update/touch functions, and you can add or change them in any place within app. 
+This openFrameworks addon manages complex UI hierarchy within the of-app asynchronously. Here every object has its own draw/update/input functions, and you can add or change them in any place within app.
 
-Todo:
------
-Focus is a method inside the object that adds it to some privileged list to the top of its hierarchy. Every callback cycle (e.g. draw, update, touch etc) has its way to call these "privileged" objects first. The object can add itself to the focused list, and if it thinks it deserves to capture the input (like touch events) in front of others, it gets the opportunity by the callback cycle (that makes the call to the privileged first and foremost). After some time the object can remove itself from the "focused" list by calling another method.
+The features include:
+* Hierarchies of any complexity, managable in a simplest way possible
+* Your widgets and views are animatable with custom easing functions, the default one is also provided
+* You can use animation engine to animate your own properties of practically any kind effectively
+* All the app input is streamlined in order to support multiple platforms, be it a touch-enabled device or a computer with mouse and keyboard. It'll use as little platform code as possible.
+* Optional constraint solver enables you to easily manage flexible UI layouts
+* Event system provides an efficient way to program complex widget behaviours
+* You can use Gesture Recognizers to decode and use basic input patterns (like dragging or pinching) easily
+
+More documentation (and examples) is coming soon.
 
 Dependencies:
 -------------
-ofxJSON
-ofxXmlSettings
+ofxLiquidEvent
