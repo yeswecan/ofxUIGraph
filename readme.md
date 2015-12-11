@@ -3,9 +3,11 @@ ofxUIGraph
 
 Introduction
 ------------
-This openFrameworks addon manages complex UI hierarchy within the of-app asynchronously. Here every object has its own draw/update/input functions, and you can add or change them in any place within app.
+This openFrameworks addon mantains complex UI hierarchies within the oF app asynchronously. Every object has its own draw/update/input functions, and you can add or change them in any place within app at runtime. It relies heavily on C++11 syntax and requires oF 0.9.0.
 
-The features include:
+Warning! Still in development, at early stage. API will change
+
+## Features
 * Hierarchies of any complexity, managable in a simplest way possible
 * Your widgets and views are animatable with custom easing functions, the default one is also provided
 * You can use animation engine to animate your own properties of practically any kind effectively
