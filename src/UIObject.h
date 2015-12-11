@@ -37,7 +37,7 @@ public:
     function<void(UIObject*)> update;
     
     function<bool()> touchDown;
-    function<bool()> mouseMove;
+    function<void()> mouseMove;
 
     function<bool()> touchUp;
     
@@ -47,7 +47,7 @@ public:
 
     function<bool(UIObject*)> touchUpC;
 
-    function<bool(UIObject*)> mouseMoveC;
+    function<void(UIObject*)> mouseMoveC;
 
     
     ///         Common callbacks
@@ -317,11 +317,11 @@ public:
 
                             
                             if (!i->touchBroadcast(touchPosition - i->position, type, fingerIndex, level + 1)) {
-                                if ((i->mouseMove()) || (i->mouseMoveC(i))) {
-                                    i->registerEvent(MOUSE_MOVE, i);
-                                    i->executeCallbacks(UIObject::MOUSE_MOVE, i);
-                                    return true;
-                                }
+                                i->mouseMove();
+                                i->mouseMoveC(i);
+                                i->registerEvent(MOUSE_MOVE, i);
+                                i->executeCallbacks(UIObject::MOUSE_MOVE, i);
+                                return true;
                             } else {
                                 //ofLog() << "touch move ended up inside children of " << i->name;
                                 return true;
