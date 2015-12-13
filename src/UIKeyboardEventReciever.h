@@ -22,7 +22,7 @@ public:
     }
     
 
-    static void initializeKeyboardRecievers() {
+    static void initializeEditableFields() {
         focusedObject = NULL;
     };
     

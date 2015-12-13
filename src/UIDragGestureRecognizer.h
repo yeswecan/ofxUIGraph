@@ -11,8 +11,6 @@
 
 #include "UIGestureRecognizer.h"
 
-namespace UIGraph {
-
 class UIDragGestureRecognizer: public UIGestureRecognizer {
 public:
     UIDragGestureRecognizer() {
@@ -21,21 +19,13 @@ public:
         lazyMode = false;
     }
     
-    UIDragGestureRecognizer(function<void(UIGestureRecognizer*)> gestureStarted_,
-                            function<void(UIGestureRecognizer*)> gestureUpdated_,
-                            function<void(UIGestureRecognizer*)> gestureEnded_): UIDragGestureRecognizer() {
-        gestureStarted = gestureStarted_;
-        gestureUpdated = gestureUpdated_;
-        gestureEnded = gestureEnded_;
-    }
-    
     // Return true if UIObject shouldn't broadcast further
     bool touchDown(ofPoint point, int finger) {
         dragFinger = finger;
         gestureAbandoned = false;
 
         if ((!dragStarted)&&(!gestureAbandoned)) {
-            UIGestureRecognizerHost::captureFinger(finger, this);
+            UIGestureRecognizerServer::captureFinger(finger, this);
             dragStarted = true;
             
             dragOffset = UIObject::fingerPositions[finger] - offset;
@@ -46,6 +36,8 @@ public:
     
     // The same as above
     bool touchDrag(ofPoint point, int finger) {
+        
+//        ofLog() << "drag update!";
         if (!gestureAbandoned)
             gestureUpdated(this);
 
@@ -55,7 +47,7 @@ public:
     // The same too
     bool touchUp(ofPoint point, int finger) {
         if (dragStarted) {
-            UIGestureRecognizerHost::releaseFinger(finger);
+            UIGestureRecognizerServer::releaseFinger(finger);
             gestureEnded(this);
             dragStarted = false;
         }
@@ -64,7 +56,7 @@ public:
     
     void stop() {
         if (dragStarted) {
-            UIGestureRecognizerHost::releaseFinger(dragFinger);
+            UIGestureRecognizerServer::releaseFinger(dragFinger);
             gestureEnded(this);
             dragStarted = false;
             gestureAbandoned = true;
@@ -77,7 +69,5 @@ public:
     
     ofPoint dragOffset;
 };
-    
-}
 
 #endif /* UIDragGestureRecognizer_h */

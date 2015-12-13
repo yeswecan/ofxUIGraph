@@ -11,10 +11,8 @@
 
 #include <stdio.h>
 #include "ofMain.h"
-#include "UIGestureRecognizerHost.h"
+#include "UIGestureRecognizerServer.h"
 #include "UIGestureDataReciever.h"
-
-namespace UIGraph {
 
 class UIGestureRecognizer: public UIGestureDataReciever {
 public:
@@ -53,7 +51,5 @@ public:
   
     ofPoint offset;
 };
-    
-}
 
 #endif /* UIGestureRecognizer_hpp */

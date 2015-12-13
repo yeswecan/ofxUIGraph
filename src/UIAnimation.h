@@ -2,25 +2,13 @@
 #ifndef UIAnimation_h
 #define UIAnimation_h
 
-#include "ofMain.h"
-
 namespace UIGraph {
 
 class UIAnimation {
 public:
     static int count;
     
-    static void update() {
-        timestamp = ofGetElapsedTimef();
-    }
     
-    double getTimestamp() {
-        return timestamp;
-    }
-    
-private:
-    static double timestamp;
-
 };
 
 template <typename T>
@@ -29,16 +17,16 @@ public:
     // Base
     Animatable() {
         inner = T();
-        timeStarted = ofGetElapsedTimef(); // TODO: replace it with static UIAnimation's timestamp
+        timeStarted = ofGetElapsedTimef();
         animationTime = 0;
 		ofLog() << "animatable constructor";
     }
     
-//    operator T & () {
-//        animate();
-//        return inner;
-//    }
-//
+    operator T & () {
+        animate();
+        return inner;
+    }
+
     T& operator=(const T & v) {
         // if you've started writing animation code, i.e.
         //
@@ -69,10 +57,9 @@ public:
         return ((ofGetElapsedTimef() - timeStarted) < animationTime);
     };
     
-    // This isn't quite there yet.
-    // The animation is need to be called from the outside,
-    // from the static UIAnimation class
     void animate() {
+        // This isn't quite there yet.
+        // The animation is need to be called from the outside.
         
         if (isAnimating()) {
             float phase = easing(((ofGetElapsedTimef() - timeStarted) / animationTime));
@@ -93,7 +80,7 @@ public:
     
     
 //protected:
-    T inner; // <-- this is not needed anymore, abandon it
+    T inner;
     T target;
     T previous;
     double animationTime, timeStarted;
