@@ -11,34 +11,33 @@
 #define DEFAULT_EASING_FACTOR 5
 ///////////////////////
 
-#include "ofxJSONElement.h"
-#include "ofxXMLSettings.h"
 #include "ofMain.h"
 #include <functional>
 #include "UIAnimation.h"
 #include "UIGestureRecognizer.h"
-#include "UIGestureRecognizerServer.h"
+#include "UIGestureRecognizerHost.h"
+#include "UIShape.h"
+#include "UIConstraintSolver.h"
+#include "ofxLiquidEvent.h"
 
-using namespace UIGraph;
-
-class UIObject: public UIGestureRecognizerServer {
-public:
-    //////// ***********  CALLBACKS  ***********  //////////
-    // TODO: a vector of generic callbacks with a list of possible
-    // events to react to.
+namespace UIGraph {
     
-    /*           Replace this with your own lambdas            */
+
+class UIObject: public UIGestureRecognizerHost, public UIShape, public UIConstraintSolver {
+public:
+    ///         Callback system
+    
+    struct DrawEventArgs {
+        UIObject *renderedObject;
+        ofPoint position, size;
+    };
     
     function<void(UIObject*)> draw;
 
     function<void(UIObject*)> update;
     
-    function<void()> drawWithoutContext;
-    
-    function<void()> updateWithoutContext;
-    
     function<bool()> touchDown;
-    function<bool()> mouseMove;
+    function<void()> mouseMove;
 
     function<bool()> touchUp;
     
@@ -48,68 +47,137 @@ public:
 
     function<bool(UIObject*)> touchUpC;
 
-    function<bool(UIObject*)> mouseMoveC;
+    function<void(UIObject*)> mouseMoveC;
 
     
-    /*              Common callbacks                 */
+    ///         Common callbacks
     
     enum EventType {
         TOUCH_UP, TOUCH_DOWN, TOUCH_DRAG, MOUSE_MOVE, UPDATE, DRAW
     };
-    // TODO: add additional callback struct with parameters,
-    // e.g. touch point, etc
-    struct commonCallback {
-        function<void(UIObject*)> callback;
-        EventType ccase;
-        string cid;
-    };
-    vector <commonCallback> commonCallbacks;
     
-    void addCallback(EventType ccase, function<void(UIObject*)> callback) {
-        commonCallback addon;
-        addon.ccase = ccase; addon.callback = callback;
-        commonCallbacks.push_back(addon);
-    };
+    std::map<EventType, ofxLiquidEvent<void>> commonCallbacks;
     
-    void addCallback(EventType ccase, function<void(UIObject*)> callback, string cid) {
-        commonCallback addon;
-        addon.ccase = ccase; addon.callback = callback;
-        addon.cid = cid;
-        commonCallbacks.push_back(addon);
+    void addCallback(EventType ccase, function<void()> callback) {
+        commonCallbacks[ccase] += callback;
     };
     
     void executeCallbacks(EventType ccase, UIObject *o) {
-        registerEvent(ccase);
-        for (auto i: commonCallbacks) {
-            if (i.ccase == ccase)
-                i.callback(o);
-        }
+        commonCallbacks[ccase].notifyListeners();
+    };
+ 
+    std::map <EventType, double> eventStack;
+    std::map <string, double> customEventStack;
+    
+    void registerEvent(EventType type, UIObject *o) {
+        eventStack[type] = ofGetElapsedTimeMillis();
+        executeCallbacks(type, o);
+    }
+    
+    float timeFromEvent(string type) {
+        return ofGetElapsedTimeMillis() - customEventStack[type];
     };
     
-    /*                      Class routines                     */
+    float timeFromEvent(EventType type) {
+        return ofGetElapsedTimeMillis() - eventStack[type];
+    };
+    
+    float timeQFromEvent(EventType type, int limitInMilliseconds) {
+        if (eventStack.find(type) == eventStack.end())
+            return -1; // no such event. returning 1 is bad,
+        // should make up some err message instead or smthn
+        else return ofClamp(((timeFromEvent(type))/(float)limitInMilliseconds), 0, 1);
+    }
+    
+    ofPoint getTransformedPosition() { // actually it's onscreen position.
+                                       // TODO: implement (inside shape, maybe?)
+        return transformedPosition;
+    }
+    
+    ofPointF innerTransform;
+    
+    ///         Constraints
+    
+    void removeSizeConstraints() {
+        // TODO: implement this
+    }
+    
+    void removePositionConstraints() {
+        // TODO: implement this
+    }
+    
+    void setSize(float x, float y) {
+        removeSizeConstraints();
+        size.x = x;
+        size.y = y;
+    }
+
+    void setPosition(float x, float y) {
+        removePositionConstraints();
+        position.x = x;
+        position.y = y;
+    }
+    
+    void setPosition(UIConstraint X, UIConstraint Y) {
+        removePositionConstraints();
+        addPositionConstraint(this, UIConstraint2D(X, Y));
+    }
+
+    void setSize(UIConstraint X, UIConstraint Y) {
+        removeSizeConstraints();
+        addSizeConstraint(this, UIConstraint2D(X, Y));
+    }
+    
+    UIConstraint getConstraintLeft(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::LEFT, p, this, arg);
+    }
+    
+    UIConstraint getConstraintTop(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::TOP, p, this, arg);
+    }
+
+    UIConstraint getConstraintInsideRight(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::INSIDE_RIGHT, p, this, arg);
+    }
+    
+    UIConstraint getConstraintInsideBottom(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::INSIDE_BOTTOM, p, this, arg);
+    }
+
+    UIConstraint getConstraintParallelToTop(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::PARALLEL_TO_TOP, p, this, arg);
+    }
+    
+    UIConstraint getConstraintParallelToLeft(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::PARALLEL_TO_LEFT, p, this, arg);
+    }
+
+    UIConstraint getConstraintPercentageOfSizeX(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::PERCENTAGE_OF_SIZE_X, p, this, arg);
+    }
+    
+    UIConstraint getConstraintPercentageOfSizeY(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::PERCENTAGE_OF_SIZE_Y, p, this, arg);
+    }
+    
+    UIConstraint getConstraintSizeXMinusArgument(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::SIZE_X_MINUS_ARGUMENT, p, this, arg);
+    }
+    
+    UIConstraint getConstraintSizeYMinusArgument(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::SIZE_Y_MINUS_ARGUMENT, p, this, arg);
+    }
+    
+    ///         Hierarchy management
     
     UIObject* addChild(UIObject *object);
     
     UIObject* getChild(string iD);
     
-    void addXML(ofxXmlSettings *addition, UIObject *targetParent);
-    
-    void parseXML(string filename);
-    
-    void parseJSON(string filename);
-    
-    /*    Application work cycle (call this from OF)           */
-
-    void updateCycle(bool updateAnimator = true);
-    
-    void drawCycle();
-    
     bool bypassClippingTest;
     
-    // TODO: clipping test is too simple and not accurate in most
-    // situations
-    
-    bool clippingTest(UIObject *i);
+    // TODO: rename clipping test (it's really a shape's point inclusion test)
+    bool clippingTest(UIShape *i);
 
     
     ofFbo getFbo() { return myFbo;}
@@ -119,14 +187,14 @@ public:
     bool useFbo;
     
     void setFboSize(ofPoint size) {
-        // TODO: free resources first!
         myFbo.allocate(size.x, size.y);
     };
     
-    bool innerViewport;
-    ofPoint innerViewportSize;
-    
-//    enum TouchType {DOWN, MOVE, DRAG, UP};
+//    bool innerViewport;
+//    ofPoint innerViewportSize;
+    void getToTheFront() {
+        zIndex = parent->getMaxIndex() + 1;
+    }
     
     int getMaxIndex() {
         int current_zIndex = 0, maxZIndex = zIndex;
@@ -139,31 +207,21 @@ public:
         return maxZIndex;
     };
     
-    bool pointInclusionTest(UIObject *i, ofPoint point) {
-        ofRectangle rect = ofRectangle(i->position.x, i->position.y, i->size.x, i->size.y);
-        return ((point.x > i->position.x) &&
-                (point.x < (i->position.x + i->size.x)) &&
-                (point.y > i->position.y) &&
-                (point.y < (i->position.y + i->size.y)));
-    }
     
     
-    bool touchingNow;
-    ofPoint touchPoint;
+    
+    UIGestureRecognizer* gestureRecognizer; // should be vector of recognizers instead
     
     static std::map<int, ofPoint> fingerPositions;
     static std::map<int, bool> fingerIsDown;
     
-    UIGestureRecognizer* gestureRecognizer; // should be vector of recognizers instead
-    
+    // TODO: move this to CPP
     bool touchBroadcast(ofPoint touchPosition, EventType type, int fingerIndex = 0, int level = 0) {
         if (!visible) return false;
         
         int counter = 0;
         int current_zIndex = 0, maxZIndex = zIndex;
         for (auto i: children) {
-            //ofLog() << counter << ":" << i->name << " - " << i->zIndex;
-            //if (i->zIndex > 10) i->zIndex = 5;
             if (maxZIndex < i->zIndex) {
                     maxZIndex = i->zIndex;
             }
@@ -173,8 +231,6 @@ public:
             counter++;
         }
         current_zIndex = maxZIndex;
-        
-        touchPoint = touchPosition; // <- this is not rational at all
         
         if (level == 0) {
             fingerPositions[fingerIndex] = touchPosition;
@@ -187,8 +243,6 @@ public:
         }
         
         if (isFingerCaptured(fingerIndex)) {
-            // Gesture recognizer has this!!
-            // need to call it now instead
             UIGestureRecognizer* gs = ((UIGestureRecognizer*)getRecognizerForFinger(fingerIndex));
             if (type == TOUCH_DOWN) {
                 gs->touchDown(touchPosition, fingerIndex);
@@ -206,13 +260,13 @@ public:
         while ((!result) && (current_zIndex >= 0) ) {
             for (auto i: children) {
                 if ( (i->zIndex == current_zIndex) &&
-                    (pointInclusionTest(i, touchPosition - innerTransform) &&
+                    (i->pointInclusionTest(touchPosition - innerTransform) &&
                      (i->visible))
                     ) {
                         i->lastTouched = ofGetElapsedTimeMillis();
                         i->lastTouchedPosition = touchPosition - i->position - innerTransform;
-                        // TODO: ^^ make it a per finger thing inside every object maybe?
-                        // could be useful for touch gesture recognizers
+                        // ^ TODO: get rid of that. Streamline pointer operations
+                        i->transformedPosition = transformedPosition + i->position;
                     
                          if (type == TOUCH_DOWN) {
                             ofLog() << "touched DOWN " << i->name << " with zIndex = "<< current_zIndex;
@@ -224,11 +278,10 @@ public:
                              
                              if ((!i->touchBroadcast(touchPosition - i->position, type, fingerIndex, level + 1)) ||
                                   (i->children.size() == 0)) {
-                                ofLog() << "touchbroadcast = false";
+                                ofLog() << "touchbroadcast on " << i->name << " = false";
                                 if ((i->touchDown()) || (i->touchDownC(i))) {
                                     ofLog() << " --- touch down ended up inside " << i->name;
-                                    i->registerEvent(TOUCH_DOWN);
-                                    i->executeCallbacks(UIObject::TOUCH_DOWN, i);
+                                    i->registerEvent(TOUCH_DOWN, i);
                                     return true;
                                 }
                              } else {
@@ -239,18 +292,14 @@ public:
                         }
 
                         if (type == TOUCH_DRAG) {
-
                             if (i->gestureRecognizer != NULL) {
                                 i->gestureRecognizer->offset = fingerPositions[fingerIndex] - (touchPosition - i->position);
                                 i->gestureRecognizer->touchDrag(touchPosition - i->position, fingerIndex);
                             }
                             
                             if (!i->touchBroadcast(touchPosition - i->position, type, fingerIndex, level + 1)) {
-//                                ofLog() << "touchbroadcast = false";
                                 if ((i->touchDragC(i))) {
-      //                              ofLog() << " --- touch down ended up inside " << i->name;
-                                    i->registerEvent(TOUCH_DRAG);
-                                    i->executeCallbacks(UIObject::TOUCH_DRAG, i);
+                                    i->registerEvent(TOUCH_DRAG, i);
                                     return true;
                                 }
                             } else {
@@ -262,19 +311,17 @@ public:
                         if (type == MOUSE_MOVE) {
                             
                             if (i->gestureRecognizer != NULL) {
-                                // the following is not implemented in gesture rec
+                                // the following is not implemented in gesture rec just yet
                                 i->gestureRecognizer->mouseMove(touchPosition - i->position);
                             }
 
                             
                             if (!i->touchBroadcast(touchPosition - i->position, type, fingerIndex, level + 1)) {
-                                if ((i->mouseMove()) || (i->mouseMoveC(i))) {
-                                    i->registerEvent(TOUCH_DRAG);
-//                                    i->executeCallbacks(UIObject::TOUCH_DRAG, i);
-                                    i->executeCallbacks(UIObject::MOUSE_MOVE, i);
-                                    //ofLog() << " --- touch move ended up inside " << i->name;
-                                    return true;
-                                }
+                                i->mouseMove();
+                                i->mouseMoveC(i);
+                                i->registerEvent(MOUSE_MOVE, i);
+                                i->executeCallbacks(UIObject::MOUSE_MOVE, i);
+                                return true;
                             } else {
                                 //ofLog() << "touch move ended up inside children of " << i->name;
                                 return true;
@@ -290,10 +337,8 @@ public:
 
                             if (!i->touchBroadcast(touchPosition - i->position, type, fingerIndex, level + 1)) {
                                 if ((i->touchUp()) || (i->touchUpC(i))) {
-                                    i->registerEvent(TOUCH_UP);
-                                    i->executeCallbacks(UIObject::TOUCH_UP, i);
+                                    i->registerEvent(TOUCH_UP, i);
 
-                                    ofLog() << " --- touch up ended up inside " << i->name;
                                     return true;
                                 }
                             } else {
@@ -308,104 +353,15 @@ public:
         }
         return false;
     }
-    
-    
-    /*                  Helpers               */
-    std::map <EventType, double> eventStack;
-    std::map <string, double> customEventStack;
 
-    void registerEvent(string type) {
-        customEventStack[type] = ofGetElapsedTimeMillis();
-    }
-
-    void registerEvent(EventType type) {
-        eventStack[type] = ofGetElapsedTimeMillis();
-    }
-
-    float timeFromEvent(string type) {
-        return ofGetElapsedTimeMillis() - customEventStack[type];
-    };
+    ///                Convenience
     
-    float timeFromEvent(EventType type) {
-        return ofGetElapsedTimeMillis() - eventStack[type];
-    };
-    
-    float timeQFromEvent(EventType type, int limitInMilliseconds) {
-        if (eventStack.find(type) == eventStack.end())
-            return 1; // no such event. returning 1 is bad,
-                      // should make up some err message instead or smthn
-        else return ofClamp(((timeFromEvent(type))/(float)limitInMilliseconds), 0, 1);
+    operator UIShape* () {
+        return (UIShape*)this;
     }
     
-    // TODO: timeQFromLastTouch and lastTouched should contain
-    // and return all kinds of info FROM MULTIPLE SOURCES,
-    // e.g. different fingers, mouse, whatever
-    double timeQFromLastTouch(int limitInMilliseconds) {
-        if (lastTouched > ofGetElapsedTimeMillis())
-            return 1;
-        if ((ofGetElapsedTimeMillis() - lastTouched) > limitInMilliseconds) return 1;
-            else return ((double)(ofGetElapsedTimeMillis() - lastTouched) / (double)limitInMilliseconds);
-    };
-    
-    int millisFromLastTouch() {
-        return (ofGetElapsedTimeMillis() - lastTouched);
-    }
-    
-    ofPoint transformedPosition;
-    ofPointF innerTransform;
-    
-    /*                Constructors            */
+    ///                Constructors
 
-	void init() {
-        color = ofPoint(ofRandom(255), ofRandom(255), ofRandom(255));
-        topParent = this;
-        parent = this;
-
-    	draw = [&](UIObject *obj){};
-
-		update = [&](UIObject *obj){};
-    
-		drawWithoutContext = [&](){};
-    
-		updateWithoutContext = []() {};
-    
-		touchDown = []()->bool {
-			return false;
-		};
-        
-		mouseMove = []()->bool {
-			return false;
-		};
-        
-		 touchUp = []()->bool {
-			return false;
-		};
-    
-		touchDownC = [](UIObject *o)->bool {
-			return false;
-		};
-
-	    touchUpC = [](UIObject *o)->bool {
-			return false;
-		};
-
-		mouseMoveC = [](UIObject *o)->bool {
-			return false;
-		};
-        
-        touchDragC = [&](UIObject *o)->bool {
-            return false;
-        };
-
-		clipTestChildren = true;
-		clipTestMe = true;
-		zIndex = 0;
-        visible = true;
-		useFbo = false;
-		useViewport = false;
-
-		gestureRecognizer = NULL;
-	}
     
     UIObject () {
 		init();
@@ -446,7 +402,6 @@ public:
         if (fbo)
             myFbo.allocate(ofGetWidth(), ofGetHeight());
         useFbo = fbo;
-        //ofLog() << "CALLED CONSTRUCTOR FOR " << nam << (fbo ?  " to use FBO" : " NOT TO USE FBO");
     }
     
     UIObject (string nam, ofPoint pos, ofPoint siz, int z_index, bool fbo) {
@@ -466,18 +421,22 @@ public:
                    // render too much garbage
     bool clipTestMe;
     
-    UIObject *topParent;
-    UIObject* getTopParent() {return topParent;}
+//    UIObject *topParent;
+    UIObject* getTopParent() {
+        UIObject *attempt = this;
+        while (attempt->parent != attempt) {
+            attempt = attempt->parent;
+        }
+        return attempt;
+    }
     string report() {
         return "object " + name + " with parent " + parent->name + " and zIndex = " + ofToString(zIndex);
     }
     
     UIObject *parent;
     vector<UIObject*> children;
-    ofxJSONElement data;
     long lastTouched;
-    ofPointF lastTouchedPosition; // it's used in DragDispatcher and it's a shame.
-    // Need to do something about it.
+    ofPointF lastTouchedPosition; // <-- probably unused
     string name;
     
     bool visible;
@@ -486,10 +445,66 @@ public:
     
     int zIndex;
     
-    ofPointF position, size;
     ofPointF color;
     
+protected:
+    /*    Application lifecycle (call this from canvas class)           */
+    
+        void updateCycle(bool updateAnimator = true);
+    
+        void drawCycle();
+
+    void init() {
+        color = ofPoint(ofRandom(255), ofRandom(255), ofRandom(255));
+        parent = this;
+        
+        draw = [&](UIObject *obj){};
+        
+        update = [&](UIObject *obj){};
+        
+        touchDown = []()->bool {
+            return false;
+        };
+        
+        mouseMove = []()->bool {
+            return false;
+        };
+        
+        touchUp = []()->bool {
+            return false;
+        };
+        
+        touchDownC = [](UIObject *o)->bool {
+            return false;
+        };
+        
+        touchUpC = [](UIObject *o)->bool {
+            return false;
+        };
+        
+        mouseMoveC = [](UIObject *o)->bool {
+            return false;
+        };
+        
+        touchDragC = [&](UIObject *o)->bool {
+            return false;
+        };
+        
+        clipTestChildren = true;
+        clipTestMe = true;
+        zIndex = 0;
+        visible = true;
+        useFbo = false;
+        useViewport = false;
+        
+        gestureRecognizer = NULL;
+    }
+
+private:
+    ofPoint transformedPosition;
 
 };
+    
+}
 
 #endif

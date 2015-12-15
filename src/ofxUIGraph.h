@@ -7,10 +7,14 @@
 
 #endif
 
-
 #include "UIObject.h"
+#include "UICanvas.h"
 #include "UIConstraint.h"
 #include "UIDragGestureRecognizer.h"
 #include "UIDropDownList.h"
+
+typedef UIGraph::UIObject::DrawEventArgs DrawArgs;
+
+
 
 #endif

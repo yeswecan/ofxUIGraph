@@ -1,7 +1,9 @@
 #ifndef UIConstraint_h
 #define UIConstraint_h
 
-#include "UIObject.h"
+#include "UIShape.h"
+
+namespace UIGraph {
 
 class UIConstraint {
 public:
@@ -20,7 +22,7 @@ public:
         argument = arg;
     }
 
-    UIConstraint(ConstraintStyle style, UIObject *ref, float arg) {
+    UIConstraint(ConstraintStyle style, UIShape *ref, float arg) {
 		init();
         if ((style == LEFT) || (style == TOP) || (style == INSIDE_BOTTOM) || (style == INSIDE_RIGHT)) {
             ofLog() << "ERROR IN CONSTRAINT: insufficient references";
@@ -32,7 +34,7 @@ public:
         argument = arg;
     }
 
-    UIConstraint(ConstraintStyle style, UIObject *ref, UIObject *thisobj, float arg) {
+    UIConstraint(ConstraintStyle style, UIShape *ref, UIShape *thisobj, float arg) {
 		init();
         constraintStyle = style;
         reference = ref;
@@ -48,8 +50,8 @@ public:
 	}
     
     // Problems with solving:
-    // 1) The reference can only be at the same level. You can't reference, say, parent object.
-    // 2) Placing object to the left of something needs object size x for position.
+    // 1) The reference can only be at the same level. You can't reference, say, parent object. (Really? Re-check it)
+    // 2) Placing object, say, to the left of something needs that object's size x to determine it's future position.
     //    It might be a big problem if object's size x depends on something else.
     float solve() {
         switch (constraintStyle) {
@@ -101,8 +103,8 @@ public:
     }
     
     float argument;
-    UIObject* reference;
-    UIObject* thisobject;
+    UIShape* reference;
+    UIShape* thisobject;
     ConstraintStyle constraintStyle;
     
     
@@ -133,57 +135,7 @@ public:
     }
 };
 
-class ConstraintSolver {
-public:
-    ConstraintSolver(){}
-    
-    /// static stuff
-    
-    static std::map<UIObject*, UIConstraint2D> positionConstraints, sizeConstraints;
-    
-    static void solveConstraints() {
-        // if it will not compile on windows, replace with smthn like:
-        //typedef std::map<std::string, std::map<std::string, std::string>>::iterator it_type;
-        for (auto i = positionConstraints.begin(); i != positionConstraints.end(); i++) {
-            i->first->position = positionConstraints[i->first].solve();
-        }
-        for (auto i = sizeConstraints.begin(); i != sizeConstraints.end(); i++) {
-            i->first->size = sizeConstraints[i->first].solve();
-        }
-    }
-
-    static void addPositionConstraint(UIObject *obj, float x, float y) {
-        positionConstraints[obj] = UIConstraint2D(x, y);
-    }
-
-    static void addPositionConstraint(UIObject *obj, ofPoint position) {
-        positionConstraints[obj] = UIConstraint2D(position.x, position.y);
-    }
-    
-    static void addPositionConstraint(UIObject *obj, UIConstraint2D cc) {
-        positionConstraints[obj] = cc;
-    }
-
-    static void addPositionConstraint(UIObject *obj, UIConstraint X, UIConstraint Y) {
-        positionConstraints[obj] = UIConstraint2D(X, Y);
-    }
-    
-    static void addSizeConstraint(UIObject *obj, float x, float y) {
-        sizeConstraints[obj] = UIConstraint2D(x, y);
-    }
-
-    static void addSizeConstraint(UIObject *obj, ofPoint size) {
-        positionConstraints[obj] = UIConstraint2D(size.x, size.y);
-    }
-
-    static void addSizeConstraint(UIObject *obj, UIConstraint2D cc) {
-        sizeConstraints[obj] = cc;
-    }
-
-    static void addSizeConstraint(UIObject *obj, UIConstraint X, UIConstraint Y) {
-        sizeConstraints[obj] = UIConstraint2D(X, Y);
-    }
-};
 
 
+}
 #endif /* UIConstraint_h */
