@@ -31,7 +31,6 @@ public:
         inner = T();
         timeStarted = ofGetElapsedTimef(); // TODO: replace it with static UIAnimation's timestamp
         animationTime = 0;
-		ofLog() << "animatable constructor";
     }
     
 //    operator T & () {
@@ -64,7 +63,8 @@ public:
     
     bool isAnimating() {
         if (timeStarted > 2) {
-            ofLog() << "animating:" << ((ofGetElapsedTimef() - timeStarted) - animationTime);
+            // TODO: Sometimes something animates without a reason.
+            //  ofLog() << "animating:" << ((ofGetElapsedTimef() - timeStarted) - animationTime);
         }
         return ((ofGetElapsedTimef() - timeStarted) < animationTime);
     };

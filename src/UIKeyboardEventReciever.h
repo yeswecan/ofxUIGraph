@@ -38,7 +38,7 @@ public:
         focusedObject = NULL;
     }
     
-    UIKeyboardEventReciever* getFocusedObject() {
+    static UIKeyboardEventReciever* getFocusedObject() {
         return focusedObject;
     }
 };

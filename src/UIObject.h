@@ -131,11 +131,19 @@ public:
     UIConstraint getConstraintLeft(UIShape *p, float arg) {
         return UIConstraint(UIConstraint::LEFT, p, this, arg);
     }
+
+    UIConstraint getConstraintRight(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::RIGHT, p, this, arg);
+    }
     
     UIConstraint getConstraintTop(UIShape *p, float arg) {
         return UIConstraint(UIConstraint::TOP, p, this, arg);
     }
 
+    UIConstraint getConstraintBottom(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::BOTTOM, p, this, arg);
+    }
+ 
     UIConstraint getConstraintInsideRight(UIShape *p, float arg) {
         return UIConstraint(UIConstraint::INSIDE_RIGHT, p, this, arg);
     }
