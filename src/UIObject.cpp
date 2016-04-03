@@ -47,7 +47,8 @@ void UIObject::updateCycle(bool updateAnimator) {
         if (children[i]->useFbo) {
             if ((children[i]->myFbo.getWidth() != children[i]->size.x) ||
                 (children[i]->myFbo.getHeight() != children[i]->size.y)) {
-                children[i]->setFboSize(ofPoint(ofGetWidth(), ofGetHeight()));
+                ofLog() << "resizing fbo; current size x = " << children[i]->myFbo.getWidth() << " , required = " << children[i]->size.x;
+                children[i]->setFboSize(ofPoint(children[i]->size.x, children[i]->size.y));
             }
         }
 

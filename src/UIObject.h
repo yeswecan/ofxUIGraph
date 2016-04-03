@@ -195,6 +195,7 @@ public:
     bool useFbo;
     
     void setFboSize(ofPoint size) {
+        ofLog() << "myFbo size x = " << myFbo.getWidth() << " ; required = " << size.x;
         myFbo.allocate(size.x, size.y);
     };
     
@@ -404,6 +405,7 @@ public:
     }
 
     UIObject (string nam, ofPoint pos, ofPoint siz, bool fbo) {
+        init();
         position = pos;
         size = siz;
         name = nam;
@@ -413,6 +415,7 @@ public:
     }
     
     UIObject (string nam, ofPoint pos, ofPoint siz, int z_index, bool fbo) {
+        init();
         position = pos;
         size = siz;
         name = nam;
@@ -421,6 +424,14 @@ public:
         if (fbo)
             myFbo.allocate(ofGetWidth(), ofGetHeight());
         useFbo = fbo;
+    }
+    
+    UIObject (string nam, float x, float y, float w, float h) {
+        init();
+        position = ofPoint(x, y);
+        size = ofPoint(w, h);
+        name = nam;
+        
     }
     
     // TODO: some more constructors
