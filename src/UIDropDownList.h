@@ -16,9 +16,9 @@ namespace UIGraph {
 
 class UIDropDownListDataProvider {
 public:
-    virtual const string at(int index) { }
+	virtual const string at(int index) = 0;
     
-    virtual const int size() { }
+	virtual const int size() = 0;
 };
 
 class UIDropDownList: public UIObject, public UIKeyboardEventReciever {

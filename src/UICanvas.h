@@ -42,8 +42,9 @@ public:
     }
     
     bool touchBroadcast(ofPoint touchPosition, EventType type, int fingerIndex = 0, int level = 0) {
-        UIObject::touchBroadcast(touchPosition, type, fingerIndex, level);
+        bool result = UIObject::touchBroadcast(touchPosition, type, fingerIndex, level);
         registerEvent(type, this);
+		return result;
     }
     
     // Window events
