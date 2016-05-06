@@ -25,6 +25,11 @@ public:
         init();
         
     }
+    EditableField(string nam) {
+    	EditableField();
+		name = nam;
+    }
+    
     
     float getCursorVisualPosition() {
         while (cursorPosition > innards.length()) {cursorPosition--;}
