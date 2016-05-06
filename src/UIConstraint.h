@@ -10,7 +10,8 @@ public:
     enum ConstraintStyle {
         LEFT, RIGHT, TOP, BOTTOM, INSIDE_LEFT, INSIDE_RIGHT, INSIDE_TOP, INSIDE_BOTTOM, VALUE,
         PERCENTAGE_OF_SIZE_X, PERCENTAGE_OF_SIZE_Y, PARALLEL_TO_TOP, PARALLEL_TO_LEFT,
-        SIZE_X_MINUS_ARGUMENT, SIZE_Y_MINUS_ARGUMENT
+        SIZE_X_MINUS_ARGUMENT, SIZE_Y_MINUS_ARGUMENT,
+        CENTER_OF_WIDTH, CENTER_OF_HEIGHT
     };
 
     UIConstraint() {
@@ -67,6 +68,10 @@ public:
             case TOP:
                 return reference->position.y - argument - thisobject->size.y;
                 break;
+            case CENTER_OF_WIDTH:
+                return reference->size.x / 2;
+            case CENTER_OF_HEIGHT:
+                return reference->size.y / 2;
             case INSIDE_LEFT:
                 return argument;
             case INSIDE_TOP:
