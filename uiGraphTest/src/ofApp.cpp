@@ -8,6 +8,9 @@ void ofApp::setup(){
     DrawArgs dArgs;
     dArgs = {new UIObject(), ofPoint(0), ofPoint(300)};
     
+    ofParameterGroup g;
+    g.
+    
     font.loadFont("3_font.ttf", 15);
     
     o1 = ui.addChild(new UIObject("o1"));

@@ -99,11 +99,11 @@ public:
     ///         Constraints
     
     void removeSizeConstraints() {
-        // TODO: implement this
+        // TODO: implement this in ConstraintSolver
     }
     
     void removePositionConstraints() {
-        // TODO: implement this
+        // TODO: implement this in ConstraintSolver
     }
     
     void setSize(float x, float y) {
@@ -126,6 +126,16 @@ public:
     void setSize(UIConstraint X, UIConstraint Y) {
         removeSizeConstraints();
         addSizeConstraint(this, UIConstraint2D(X, Y));
+    }
+    
+    void setSize(float x, UIConstraint Y) {
+        removeSizeConstraints();
+        addSizeConstraint(this, UIConstraint2D(x, Y));
+    }
+
+    void setSize(UIConstraint X, float y) {
+        removeSizeConstraints();
+        addSizeConstraint(this, UIConstraint2D(X, y));
     }
     
     UIConstraint getConstraintLeft(UIShape *p, float arg) {

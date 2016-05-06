@@ -12,6 +12,7 @@
 #include "UIConstraint.h"
 #include "UIDragGestureRecognizer.h"
 #include "UIDropDownList.h"
+#include "Slider.h"
 
 typedef UIGraph::UIObject::DrawEventArgs DrawArgs;
 
