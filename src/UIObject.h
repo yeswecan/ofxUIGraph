@@ -170,6 +170,14 @@ public:
         return UIConstraint(UIConstraint::INSIDE_BOTTOM, p, this, arg);
     }
 
+    UIConstraint getConstraintCenterOfWidth(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::CENTER_OF_WIDTH, p, this, arg);
+    }
+
+    UIConstraint getConstraintCenterOfHeight(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::CENTER_OF_HEIGHT, p, this, arg);
+    }
+
     UIConstraint getConstraintParallelToTop(UIShape *p, float arg) {
         return UIConstraint(UIConstraint::PARALLEL_TO_TOP, p, this, arg);
     }
