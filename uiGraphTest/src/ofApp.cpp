@@ -8,9 +8,6 @@ void ofApp::setup(){
     DrawArgs dArgs;
     dArgs = {new UIObject(), ofPoint(0), ofPoint(300)};
     
-    ofParameterGroup g;
-    g.
-    
     font.loadFont("3_font.ttf", 15);
     
     o1 = ui.addChild(new UIObject("o1"));
@@ -33,8 +30,6 @@ void ofApp::setup(){
     o2->setSize(100, 75);
     o2->setPosition(o2->getConstraintLeft(o1, 50),
                     o2->getConstraintParallelToTop(o1, 0));
-    
-    
     
     panel = ui.addChild(new UIObject("panel"));
     panel->draw = [&](UIObject* o) {
