@@ -69,9 +69,9 @@ public:
                 return reference->position.y - argument - thisobject->size.y;
                 break;
             case CENTER_OF_WIDTH:
-                return reference->size.x / 2;
+                return reference->size.x / 2 - thisobject->size.x / 2;
             case CENTER_OF_HEIGHT:
-                return reference->size.y / 2;
+                return reference->size.y / 2 - thisobject->size.y / 2;
             case INSIDE_LEFT:
                 return argument;
             case INSIDE_TOP:

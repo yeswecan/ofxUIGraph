@@ -17,14 +17,21 @@ using namespace UIGraph;
 class EditableField: public UIObject, UIKeyboardEventReciever {
 public:
     EditableField() {
-        bgColor = ofColor(0);
-        textColor = ofColor(255);
+		bgColor = ofColor(0);
+		textColor = ofColor(255);
 		fillColor = ofColor(127);
-        font = NULL;
-
-        init();
-        
+		font = NULL;
+		init();
     }
+    EditableField(string nam) {
+		bgColor = ofColor(0);
+		textColor = ofColor(255);
+		fillColor = ofColor(127);
+		font = NULL;
+    	init();
+		name = nam;
+    }
+    
     
     float getCursorVisualPosition() {
         while (cursorPosition > innards.length()) {cursorPosition--;}
@@ -49,12 +56,12 @@ public:
         };
         
         draw = [&](UIObject *o) {
-            
+
             ofSetColor(bgColor);
             ofRect(0,0,o->size.x, o->size.y);
             
 			ofSetColor(fillColor);
-			ofRect(0, 0, o->size.x * (float)ofToInt(innards) / (float)maxValue, o->size.y);
+			ofRect(0, 0, o->size.x * (float)ofToFloat(innards) / (float)maxValue, o->size.y);
             
             ofSetColor(textColor);
             string whatToDisplay = innards;
@@ -78,8 +85,8 @@ public:
             
         };
         
-		onValueChange = [&](){};
-		onEnter = [&](){};
+		onValueChange = [&](EditableField*){};
+		onEnter = [&](EditableField*){};
         
         strokeColor = ofColor(230);
     }
@@ -95,7 +102,13 @@ public:
         init();
     }
     
-    void setupForDragging(int min, int max) {
+	void clamp() {
+	   if (ofToFloat(innards) < minValue) innards = ofToString(minValue);
+      if (ofToFloat(innards) > maxValue) innards = ofToString(maxValue);
+      cursorPosition = innards.length();
+	}    
+    
+    void setupForDragging(float min, float max) {
         numbersOnly = true;
         
         minValue = min;
@@ -105,7 +118,7 @@ public:
         
         dgr->gestureStarted = [&](UIGestureRecognizer *d) {
             UIDragGestureRecognizer *dgr = (UIDragGestureRecognizer*)d;
-            numWhenDragStarted = ofToInt(innards);
+            numWhenDragStarted = ofToFloat(innards);
             fingerPositionWhenDragStarted = UIObject::fingerPositions[dgr->dragFinger];
         };
         
@@ -113,13 +126,13 @@ public:
             UIDragGestureRecognizer *dgr = (UIDragGestureRecognizer*)d;
 			if (dgr->dragFinger != 0) return; //hmmm
             //int diff = (UIObject::fingerPositions[dgr->dragFinger] - fingerPositionWhenDragStarted).y;
-			int diff = (fingerPositionWhenDragStarted - UIObject::fingerPositions[dgr->dragFinger]).x;
+				float diff = (((fingerPositionWhenDragStarted - UIObject::fingerPositions[dgr->dragFinger]).x)
+					/ size.x) * (maxValue - minValue);
+					
             this->innards = ofToString(numWhenDragStarted - diff);
-            if (ofToInt(innards) < minValue) innards = ofToString(minValue);
-            if (ofToInt(innards) > maxValue) innards = ofToString(maxValue);
-            cursorPosition = innards.length();
-            
-            onValueChange();
+				this->clamp();
+           
+            onValueChange(this);
             
         };
         dgr->gestureEnded = [&](UIGestureRecognizer *d) {
@@ -135,10 +148,11 @@ public:
         innards.insert(innards.begin() + cursorPosition, input);
         cursorPosition++;
         
-        if (innards[0] == '0') {
+        /*if (innards[0] == '0') {
             innards.erase(0, 1);
             cursorPosition--;
-        }
+        }*/
+        this->clamp();
     }
     
     void keyPressed(int key) {
@@ -157,44 +171,47 @@ public:
                 innards.erase(cursorPosition - 1, 1);
                 cursorPosition--;
             }
-            onValueChange();
+            onValueChange(this);
         }
         
         if (numbersOnly) {
-            if (( key >= 48 )&&( key <= 57 )) { //number keys
+            if ((( key >= 48 )&&( key <= 57 )) || key == '.' || key == '-') { //number keys
                 insertSymbol((char)key);
+            	onValueChange(this);
             }
-            onValueChange();
         } else
         if (((key >= 45) && (key <= 122)) || (key == ' ')) { // numbers and letters
             insertSymbol((char)key);
-            onValueChange();
+            onValueChange(this);
         }
         if (key == 13) {
             unfocusKeyboardRecievers();
-            onEnter();
+            onEnter(this);
         }
     }
 
 	int getValue() {
-		return (ofToInt(innards));
+		return ((int)ofToFloat(innards));
 	}
-    
+	float getValuef() {
+		return (ofToFloat(innards));
+	}
+
     void setValue(float value) {
-        innards = ofToString((int)value);
+        innards = ofToString((float)value);
     }
     
     void setValue(int value) {
-        innards = ofToString((int)value);
+        innards = ofToString((float)value);
     }
     
     
-    function<void()> onValueChange;
-    function<void()> onEnter;
+    function<void(EditableField*)> onValueChange;
+    function<void(EditableField*)> onEnter;
     
     bool numbersOnly;
     string innards;
-    int numWhenDragStarted, minValue, maxValue;
+    float numWhenDragStarted, minValue, maxValue;
     ofPoint fingerPositionWhenDragStarted;
     
     ofColor bgColor, textColor, strokeColor, fillColor;

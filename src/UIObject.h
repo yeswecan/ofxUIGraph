@@ -153,6 +153,14 @@ public:
     UIConstraint getConstraintBottom(UIShape *p, float arg) {
         return UIConstraint(UIConstraint::BOTTOM, p, this, arg);
     }
+
+    UIConstraint getConstraintInsideLeft(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::INSIDE_LEFT, p, this, arg);
+    }
+
+    UIConstraint getConstraintInsideTop(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::INSIDE_TOP, p, this, arg);
+    }
  
     UIConstraint getConstraintInsideRight(UIShape *p, float arg) {
         return UIConstraint(UIConstraint::INSIDE_RIGHT, p, this, arg);
@@ -160,6 +168,14 @@ public:
     
     UIConstraint getConstraintInsideBottom(UIShape *p, float arg) {
         return UIConstraint(UIConstraint::INSIDE_BOTTOM, p, this, arg);
+    }
+
+    UIConstraint getConstraintCenterOfWidth(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::CENTER_OF_WIDTH, p, this, arg);
+    }
+
+    UIConstraint getConstraintCenterOfHeight(UIShape *p, float arg) {
+        return UIConstraint(UIConstraint::CENTER_OF_HEIGHT, p, this, arg);
     }
 
     UIConstraint getConstraintParallelToTop(UIShape *p, float arg) {
