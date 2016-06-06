@@ -4,8 +4,6 @@
 
 #include "ofMain.h"
 
-namespace UIGraph {
-
 class UIAnimation {
 public:
     static int count;
@@ -101,7 +99,5 @@ public:
 
 typedef Animatable<ofPoint> ofPointF;
 typedef Animatable<ofColor> ofColorF;
-
-}
 
 #endif

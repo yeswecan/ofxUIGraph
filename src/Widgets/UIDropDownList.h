@@ -12,8 +12,6 @@
 #include "UIObject.h"
 #include "UIKeyboardEventReciever.h"
 
-namespace UIGraph {
-
 class UIDropDownListDataProvider {
 public:
 	virtual const string at(int index) = 0;
@@ -296,6 +294,4 @@ public:
     function<void()> selectedNewRow;
 };
     
-}
-
 #endif /* UIDropDownList_h */

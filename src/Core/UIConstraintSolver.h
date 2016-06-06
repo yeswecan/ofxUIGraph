@@ -7,8 +7,7 @@
 
 #include "UIConstraint.h"
 
-namespace UIGraph {
-    class UIConstraintSolver {
+class UIConstraintSolver {
     public:
         UIConstraintSolver(){}
         
@@ -71,7 +70,6 @@ namespace UIGraph {
         }
         
 
-    };
-}
+};
 
 #endif /* UIConstraintSolver_h */

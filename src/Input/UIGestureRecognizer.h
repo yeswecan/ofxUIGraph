@@ -11,12 +11,10 @@
 
 #include <stdio.h>
 #include "ofMain.h"
-#include "UIGestureRecognizerHost.h"
-#include "UIGestureDataReciever.h"
+#include "UIFingerManager.h"
+#include "UIInputReceiver.h"
 
-namespace UIGraph {
-
-class UIGestureRecognizer: public UIGestureDataReciever {
+class UIGestureRecognizer: public UIInputReceiver {
 public:
     UIGestureRecognizer(){
 	    gestureStarted = [](UIGestureRecognizer* g) {};
@@ -54,6 +52,4 @@ public:
     ofPoint offset;
 };
     
-}
-
 #endif /* UIGestureRecognizer_hpp */

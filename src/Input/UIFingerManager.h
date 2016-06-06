@@ -9,23 +9,28 @@
 #ifndef UIGestureRecognizerServer_h
 #define UIGestureRecognizerServer_h
 
-#include "UIGestureDataReciever.h"
+#include "UIInputReceiver.h"
 #include "UIGestureRecognizer.h"
 #include "ofMain.h"
 
 
-class UIGestureRecognizerHost {
+class UIFingerManager {
 public:
-    UIGestureRecognizerHost() {
-        for (int i = 0; i < 10; i++) {
-            capturedFingers[i] = NULL;
+    UIFingerManager() {
+        if (!initialized) {
+            // TODO: better will be to initialize std::map in place lower
+            // in code
+            for (int i = 0; i < 100; i++) capturedFingers[i] = NULL;
+            initialized = true;
         }
     }
     
-    static std::map<int, UIGestureDataReciever*> capturedFingers;
+    bool initialized = false;
+    
+    static std::map<int, UIInputReceiver*> capturedFingers;
 
     // The following functions are called by gesture recognizers
-    static void captureFinger(int finger, UIGestureDataReciever *r) {
+    static void captureFinger(int finger, UIInputReceiver *r) {
         capturedFingers[finger] = r;
     }
     
@@ -35,7 +40,7 @@ public:
     
     // The following is called by the child class to check fingers and recognizers
     
-    UIGestureDataReciever* getRecognizerForFinger(int finger) {
+    UIInputReceiver* getRecognizerForFinger(int finger) {
         return capturedFingers[finger];
     }
     

@@ -11,8 +11,6 @@
 
 #include "UIGestureRecognizer.h"
 
-namespace UIGraph {
-
 class UIDragGestureRecognizer: public UIGestureRecognizer {
 public:
     UIDragGestureRecognizer() {
@@ -35,7 +33,7 @@ public:
         gestureAbandoned = false;
 
         if ((!dragStarted)&&(!gestureAbandoned)) {
-            UIGestureRecognizerHost::captureFinger(finger, this);
+            UIFingerManager::captureFinger(finger, this);
             dragStarted = true;
             
             dragOffset = UIObject::fingerPositions[finger] - offset;
@@ -55,7 +53,7 @@ public:
     // The same too
     bool touchUp(ofPoint point, int finger) {
         if (dragStarted) {
-            UIGestureRecognizerHost::releaseFinger(finger);
+            UIFingerManager::releaseFinger(finger);
             gestureEnded(this);
             dragStarted = false;
         }
@@ -64,7 +62,7 @@ public:
     
     void stop() {
         if (dragStarted) {
-            UIGestureRecognizerHost::releaseFinger(dragFinger);
+            UIFingerManager::releaseFinger(dragFinger);
             gestureEnded(this);
             dragStarted = false;
             gestureAbandoned = true;
@@ -78,6 +76,4 @@ public:
     ofPoint dragOffset;
 };
     
-}
-
 #endif /* UIDragGestureRecognizer_h */

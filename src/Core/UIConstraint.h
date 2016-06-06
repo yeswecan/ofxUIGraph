@@ -3,8 +3,6 @@
 
 #include "UIShape.h"
 
-namespace UIGraph {
-
 class UIConstraint {
 public:
     enum ConstraintStyle {
@@ -141,6 +139,4 @@ public:
 };
 
 
-
-}
 #endif /* UIConstraint_h */

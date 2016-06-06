@@ -9,7 +9,6 @@
 #include "ofMain.h"
 #include "UIKeyboardEventReciever.h"
 
-namespace UIGraph {
 class UICanvas: public UIObject {
 public:
     UICanvas() {
@@ -116,6 +115,5 @@ public:
         // ?
     }
 };
-}
 
 #endif /* UICanvas_h */

@@ -3,7 +3,6 @@
 #include "ofMain.h"
 #include "ofxUIGraph.h"
 #include "UIDropDownList.h"
-#include "EditableField.h"
 #include "UICanvas.h"
 
 // UIGraph TODO:
@@ -18,8 +17,6 @@
 //    чтобы изменения в них приводили к изменениям их целей, а не их самих.
 // 3) Аргументы констрейнтов должны тоже стать Animatable
 // 4) Аналог класса layer из Cocoa Touch для создания виджетов, имеющих не квадратные формы или располагающихся на горизонтально. Функции проверки точки на входимость, матрица размера/поворота, а также касания - вот что потребует модернизации
-
-using namespace UIGraph;
 
 class ofApp : public ofBaseApp{
 

@@ -13,23 +13,24 @@
 
 #include "ofMain.h"
 #include <functional>
-#include "UIAnimation.h"
 #include "UIGestureRecognizer.h"
-#include "UIGestureRecognizerHost.h"
+#include "UIFingerManager.h"
 #include "UIShape.h"
 #include "UIConstraintSolver.h"
 #include "ofxLiquidEvent.h"
 
-namespace UIGraph {
-    
-
-class UIObject: public UIGestureRecognizerHost, public UIShape, public UIConstraintSolver {
+class UIObject: public UIFingerManager, public UIShape, public UIConstraintSolver {
 public:
+    
     ///         Callback system
     
     struct DrawEventArgs {
         UIObject *renderedObject;
         ofPoint position, size;
+        
+        void sayHi() {
+            ofLog() << "hi from struct's function!";
+        };
     };
     
     function<void(UIObject*)> draw;
@@ -435,6 +436,8 @@ public:
         position = pos;
         size = siz;
         name = nam;
+        // WARNING!! Test case
+        // TODO: test this
         if (fbo)
             myFbo.allocate(ofGetWidth(), ofGetHeight());
         useFbo = fbo;
@@ -447,6 +450,7 @@ public:
         name = nam;
         zIndex = z_index;
         // WARNING!! Test case
+        // TODO: test this
         if (fbo)
             myFbo.allocate(ofGetWidth(), ofGetHeight());
         useFbo = fbo;
@@ -549,7 +553,5 @@ private:
     ofPoint transformedPosition;
 
 };
-    
-}
 
 #endif

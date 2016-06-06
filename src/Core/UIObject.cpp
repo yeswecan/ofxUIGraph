@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "UIObject.h"
 
-using namespace UIGraph;
-
 ///             Static vars for finger management
 
 std::map<int, ofPoint>  UIObject::fingerPositions;

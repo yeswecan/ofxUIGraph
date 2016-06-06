@@ -14,7 +14,7 @@
 #include "UIDropDownList.h"
 #include "Slider.h"
 
-typedef UIGraph::UIObject::DrawEventArgs DrawArgs;
+typedef UIObject::DrawEventArgs DrawArgs;
 
 
 

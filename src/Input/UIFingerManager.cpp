@@ -8,5 +8,6 @@
 
 #include <stdio.h>
 #include "UIGestureRecognizer.h"
+#include "UIFingerManager.h"
 
-std::map<int, UIGestureDataReciever*> UIGestureRecognizerHost::capturedFingers;
+std::map<int, UIInputReceiver*> UIFingerManager::capturedFingers;

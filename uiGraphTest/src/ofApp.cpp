@@ -1,7 +1,5 @@
 #include "ofApp.h"
 
-using namespace UIGraph;
-
 //--------------------------------------------------------------
 void ofApp::setup(){
     
@@ -83,7 +81,7 @@ void ofApp::setup(){
     e->innards = "125";
     e->numbersOnly = true;
     e->setupForDragging(15, 1000);
-    e->onNumberChange = [&]() {
+    e->onValueChange = [&](EditableField*) {
         
     };
 
@@ -117,6 +115,22 @@ void ofApp::update(){
 void ofApp::draw(){
     ofClear(0);
     ui.draw();
+    
+    /// blend func test
+    /*
+    ofClear(0);
+    ofSetColor(255);
+    ofRect(0, 0, ofGetWidth() / 2, ofGetHeight());
+    
+    ofSetColor(0);
+    ofRect(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight());
+    
+    ofSetColor(255);
+    glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE_MINUS_SRC_COLOR);
+    ofCircle(ofGetWidth() / 2, ofGetHeight() / 2, ofGetHeight() / 3);
+    
+    ofEnableAlphaBlending();
+     */
 }
 
 //--------------------------------------------------------------

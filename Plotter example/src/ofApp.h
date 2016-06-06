@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include "ofxPlotter.h"
 
+#include "ofxUIGraph.h"
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -23,4 +25,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
     ofxPlotter plotter;
+    
+    UICanvas canvas;
+    UIObject *plotterWidget;
 };

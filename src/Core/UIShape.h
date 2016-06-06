@@ -4,8 +4,6 @@
 #include "UIAnimation.h"
 #include "ofMain.h"
 
-namespace UIGraph {
-
 class UIShape {
 public:
     UIShape() {}
@@ -23,5 +21,4 @@ public:
     Animatable<ofPoint> position, size;
 };
     
-}
 #endif /* UIShape_h */

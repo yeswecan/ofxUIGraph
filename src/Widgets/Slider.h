@@ -12,8 +12,6 @@
 #include "UIObject.h"
 #include "UIKeyboardEventReciever.h"
 
-using namespace UIGraph;
-
 class EditableField: public UIObject, UIKeyboardEventReciever {
 public:
     EditableField() {
@@ -77,11 +75,22 @@ public:
                     ofSetLineWidth(1);
                 ofFill();
             }
+
+            // the following glBlendFunc enables background inversion, but doesn't work here
+            // for some reason :/
+//            glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE_MINUS_SRC_COLOR);
             if (font == NULL) {
+                ofSetColor(0);
+                ofDrawBitmapString(whatToDisplay, 15, 17);
+                ofSetColor(230);
                 ofDrawBitmapString(whatToDisplay, 15, 15);
             } else {
+                ofSetColor(0);
+                font->drawString(whatToDisplay, 17, font->getLineHeight());
+                ofSetColor(230);
                 font->drawString(whatToDisplay, 15, font->getLineHeight());
             }
+            ofEnableAlphaBlending();
             
         };
         
