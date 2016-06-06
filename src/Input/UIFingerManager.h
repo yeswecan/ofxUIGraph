@@ -18,8 +18,6 @@ class UIFingerManager {
 public:
     UIFingerManager() {
         if (!initialized) {
-            // TODO: better will be to initialize std::map in place lower
-            // in code
             for (int i = 0; i < 100; i++) capturedFingers[i] = NULL;
             initialized = true;
         }
