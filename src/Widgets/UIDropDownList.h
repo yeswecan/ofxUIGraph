@@ -161,11 +161,13 @@ public:
         
         // Scroll bar dragging
         UIDragGestureRecognizer *dgr = new UIDragGestureRecognizer();
-        dgr->gestureStarted = [&](UIGestureRecognizer *d) {
-            UIDragGestureRecognizer *dgr = (UIDragGestureRecognizer*)d;
+        
+        dgr->gestureStarted = [&](DragGestureArgs args) {
+            UIDragGestureRecognizer *dgr = args.recognizer;
             
             initialInnerTransform = openedDropDownList->innerTransform;
             initialTouchPosition = UIObject::fingerPositions[dgr->dragFinger] - dgr->dragOffset - openedDropDownList->position + ofPoint(0, 0);
+            
             if (dgr->dragOffset.x < (openedDropDownList->size.x - 20)) {
                 // selecting a new row
                 dgr->stop();
@@ -180,8 +182,10 @@ public:
 //                ofLog() << "NOT DROPPING";
             }
         };
-        dgr->gestureUpdated = [&](UIGestureRecognizer *d) {
-            UIDragGestureRecognizer *dgr = (UIDragGestureRecognizer*)d;
+        
+        dgr->gestureUpdated = [&](DragGestureArgs args) {
+            
+            UIDragGestureRecognizer *dgr = args.recognizer;
             float maximum = rowHeight * getRowsCount() - openedDropDownList->size.y;
             ofPoint cOffset = UIObject::fingerPositions[dgr->dragFinger] - dgr->dragOffset - openedDropDownList->getTransformedPosition();
             ofLog() << (dgr->offset);
@@ -192,7 +196,8 @@ public:
             if (openedDropDownList->innerTransform.y < -maximum) openedDropDownList->innerTransform.y = -maximum;
             if (openedDropDownList->innerTransform.y > 0) openedDropDownList->innerTransform.y = 0;
         };
-        dgr->gestureEnded = [&](UIGestureRecognizer *d) {
+         
+        dgr->gestureEnded = [&](DragGestureArgs args) {
             ofLog() << "gesture ended!";
         };
         

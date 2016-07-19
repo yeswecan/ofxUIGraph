@@ -125,18 +125,17 @@ public:
         
         UIDragGestureRecognizer *dgr = new UIDragGestureRecognizer();
         
-        dgr->gestureStarted = [&](UIGestureRecognizer *d) {
-            UIDragGestureRecognizer *dgr = (UIDragGestureRecognizer*)d;
+        dgr->gestureStarted = [&](DragGestureArgs args) {
             numWhenDragStarted = ofToFloat(innards);
             fingerPositionWhenDragStarted = UIObject::fingerPositions[dgr->dragFinger];
         };
         
-        dgr->gestureUpdated = [&](UIGestureRecognizer *d) {
-            UIDragGestureRecognizer *dgr = (UIDragGestureRecognizer*)d;
+        dgr->gestureUpdated = [&](DragGestureArgs args) {
+            UIDragGestureRecognizer *dgr = args.recognizer;
 			if (dgr->dragFinger != 0) return; //hmmm
             //int diff = (UIObject::fingerPositions[dgr->dragFinger] - fingerPositionWhenDragStarted).y;
-				float diff = (((fingerPositionWhenDragStarted - UIObject::fingerPositions[dgr->dragFinger]).x)
-					/ size.x) * (maxValue - minValue);
+            float diff = (((fingerPositionWhenDragStarted - UIObject::fingerPositions[dgr->dragFinger]).x)
+                          / size.x) * (maxValue - minValue);
 					
             this->innards = ofToString(numWhenDragStarted - diff);
 				this->clamp();
@@ -144,7 +143,8 @@ public:
             onValueChange(this);
             
         };
-        dgr->gestureEnded = [&](UIGestureRecognizer *d) {
+        
+        dgr->gestureEnded = [&](DragGestureArgs args) {
         };
         
         gestureRecognizer = dgr;

@@ -13,6 +13,7 @@
 #include "UIDragGestureRecognizer.h"
 #include "UIDropDownList.h"
 #include "Slider.h"
+#include "LiquidEvent.h"
 
 typedef UIObject::DrawEventArgs DrawArgs;
 

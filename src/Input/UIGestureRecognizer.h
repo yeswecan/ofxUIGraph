@@ -17,9 +17,6 @@
 class UIGestureRecognizer: public UIInputReceiver {
 public:
     UIGestureRecognizer(){
-	    gestureStarted = [](UIGestureRecognizer* g) {};
-	    gestureUpdated = [](UIGestureRecognizer* g) {};
-		gestureEnded = [](UIGestureRecognizer* g) {};
 
 	}
     
@@ -43,12 +40,6 @@ public:
         
     }
 
-    /// State
-    
-    function<void(UIGestureRecognizer*)> gestureStarted;
-    function<void(UIGestureRecognizer*)> gestureUpdated;
-    function<void(UIGestureRecognizer*)> gestureEnded;
-  
     ofPoint offset;
 };
     

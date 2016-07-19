@@ -19,9 +19,17 @@ public:
         lazyMode = false;
     }
     
-    UIDragGestureRecognizer(function<void(UIGestureRecognizer*)> gestureStarted_,
-                            function<void(UIGestureRecognizer*)> gestureUpdated_,
-                            function<void(UIGestureRecognizer*)> gestureEnded_): UIDragGestureRecognizer() {
+    struct DragGestureArgs {
+        ofPoint offset;
+        ofPoint draggedPoint;
+        ofPoint initialPoint;
+        int dragFinger = 0;
+        UIDragGestureRecognizer *recognizer;
+    };
+    
+    UIDragGestureRecognizer(function<void(DragGestureArgs args)> gestureStarted_,
+                            function<void(DragGestureArgs args)> gestureUpdated_,
+                            function<void(DragGestureArgs args)> gestureEnded_): UIDragGestureRecognizer() {
         gestureStarted = gestureStarted_;
         gestureUpdated = gestureUpdated_;
         gestureEnded = gestureEnded_;
@@ -35,45 +43,80 @@ public:
         if ((!dragStarted)&&(!gestureAbandoned)) {
             UIFingerManager::captureFinger(finger, this);
             dragStarted = true;
+            dragFinger = finger;
             
             dragOffset = UIObject::fingerPositions[finger] - offset;
-            gestureStarted(this);
+            initialPoint = point;
+            
+            gestureStarted(getArgs(point));
+            
+            lastRegisteredPoint = point;
         }
 		return true;
     };
     
     // The same as above
     bool touchDrag(ofPoint point, int finger) {
-        if (!gestureAbandoned)
-            gestureUpdated(this);
-
+        if ((!gestureAbandoned) && (finger == dragFinger)) {
+            gestureUpdated(getArgs(point));
+            
+            lastRegisteredPoint = point;
+        }
+        
 		return true;
     };
     
     // The same too
     bool touchUp(ofPoint point, int finger) {
-        if (dragStarted) {
+        if ((dragStarted) && (finger == dragFinger)) {
             UIFingerManager::releaseFinger(finger);
-            gestureEnded(this);
+            gestureEnded(getArgs(point));
             dragStarted = false;
+            
+            lastRegisteredPoint = point;
         }
+        
 		return true;
     };
     
     void stop() {
         if (dragStarted) {
             UIFingerManager::releaseFinger(dragFinger);
-            gestureEnded(this);
+            gestureEnded(getArgs(lastRegisteredPoint));
             dragStarted = false;
             gestureAbandoned = true;
         }
     }
+    
+    
+    // Public callbacks
+    
+    std::function<void(DragGestureArgs args)> gestureStarted;
+    std::function<void(DragGestureArgs args)> gestureUpdated;
+    std::function<void(DragGestureArgs args)> gestureEnded;
 
+    // Soon to-be-private settings
+    
     int dragFinger;
-    
     bool dragStarted, gestureAbandoned, lazyMode;
+    ofPoint dragOffset, lastRegisteredPoint, initialPoint;
+
     
-    ofPoint dragOffset;
+private:
+    
+    DragGestureArgs getArgs(ofPoint p) {
+        DragGestureArgs result;
+        result.offset = dragOffset;
+        result.draggedPoint = p;
+        result.dragFinger = dragFinger;
+        result.recognizer = this;
+        result.initialPoint = initialPoint;
+        
+        return result;
+    }
+
 };
+
+typedef UIDragGestureRecognizer::DragGestureArgs DragGestureArgs;
     
 #endif /* UIDragGestureRecognizer_h */
