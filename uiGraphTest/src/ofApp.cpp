@@ -55,18 +55,20 @@ void ofApp::setup(){
     //// Gesture stuff for o4
     
     UIDragGestureRecognizer *dgr = new UIDragGestureRecognizer();
-    dgr->gestureStarted = [&](UIGestureRecognizer *d) {
-        UIDragGestureRecognizer *dgr = (UIDragGestureRecognizer*)d;
+    dgr->gestureStarted = [&](DragGestureArgs args) {
+        UIDragGestureRecognizer *dgr = args.recognizer;
     };
-    dgr->gestureUpdated = [&](UIGestureRecognizer *d) {
-        UIDragGestureRecognizer *dgr = (UIDragGestureRecognizer*)d;
+    
+    dgr->gestureUpdated = [&](DragGestureArgs args) {
+        UIDragGestureRecognizer *dgr = args.recognizer;
         o4->position = UIObject::fingerPositions[dgr->dragFinger] - panel->position - dgr->dragOffset;
         
         if (o4->position.x < 0) o4->position.x = 0;
         if (o4->position.y < 0) o4->position.y = 0;
         
     };
-    dgr->gestureEnded = [&](UIGestureRecognizer *d) {
+    
+    dgr->gestureEnded = [&](DragGestureArgs args) {
     };
     
     o4->gestureRecognizer = dgr;
