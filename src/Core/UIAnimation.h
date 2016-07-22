@@ -22,10 +22,10 @@ private:
 };
 
 template <typename T>
-class Animatable: public UIAnimation, public T {
+class UIAnimatable: public UIAnimation, public T {
 public:
     // Base
-    Animatable() {
+    UIAnimatable() {
         inner = T();
         timeStarted = ofGetElapsedTimef(); // TODO: replace it with static UIAnimation's timestamp
         animationTime = 0;
@@ -97,7 +97,7 @@ public:
     double animationTime, timeStarted;
 };
 
-typedef Animatable<ofPoint> ofPointF;
-typedef Animatable<ofColor> ofColorF;
+typedef UIAnimatable<ofPoint> ofPointF;
+typedef UIAnimatable<ofColor> ofColorF;
 
 #endif

@@ -17,7 +17,7 @@
 #include "UIFingerManager.h"
 #include "UIShape.h"
 #include "UIConstraintSolver.h"
-#include "ofxLiquidEvent.h"
+#include "LiquidEvent.h"
 
 class UIObject: public UIFingerManager, public UIShape, public UIConstraintSolver {
 public:
@@ -57,7 +57,7 @@ public:
         TOUCH_UP, TOUCH_DOWN, TOUCH_DRAG, MOUSE_MOVE, UPDATE, DRAW
     };
     
-    std::map<EventType, ofxLiquidEvent<void>> commonCallbacks;
+    std::map<EventType, LiquidEvent<void>> commonCallbacks;
     
     void addCallback(EventType ccase, function<void()> callback) {
         commonCallbacks[ccase] += callback;

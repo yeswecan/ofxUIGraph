@@ -18,7 +18,7 @@ public:
     }
 
     
-    Animatable<ofPoint> position, size;
+    UIAnimatable<ofPoint> position, size;
 };
     
 #endif /* UIShape_h */

@@ -156,8 +156,8 @@ protected:
 template<>
 class LiquidEvent<void> {
     typedef FUNCTION<void()> Functor;
-    typedef ofxLiquidEvent<int>::IndexType IndexType;
-    typedef ofxLiquidEvent<int>::Index Index;
+    typedef LiquidEvent<int>::IndexType IndexType;
+    typedef LiquidEvent<int>::Index Index;
     typedef std::map<Index, Functor> FunctorMap;
     typedef std::pair<Index, Functor> Pair;
 public:
