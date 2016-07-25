@@ -226,8 +226,6 @@ public:
         myFbo.allocate(size.x, size.y);
     };
     
-//    bool innerViewport;
-//    ofPoint innerViewportSize;
     void getToTheFront() {
         zIndex = parent->getMaxIndex() + 1;
     }
