@@ -25,18 +25,19 @@ public:
     bool initialized = false;
     
     
-    void update() {
-        if (!initialized) {
+    void update() {  // doesn't get called in release mode????
+        if (!initialized) { 
             size = ofPoint(ofGetWidth(), ofGetHeight());
             initialized = true;
         }
         solveConstraints();
         UIAnimation::update();
         updateCycle();
-    }
+	}
     
     void draw() {
-        ofSetColor(255);
+		size = ofPoint(ofGetWindowWidth(), ofGetWindowHeight());
+		ofSetColor(255);
         drawCycle();
     }
     
