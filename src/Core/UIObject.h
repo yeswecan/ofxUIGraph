@@ -293,6 +293,9 @@ public:
         bool result = false;
         while ((!result) && (current_zIndex >= 0) ) {
             for (auto i: children) {
+                
+                if (type == TOUCH_DOWN) { ofLog() << i->name << " ; " << (ofPoint)i->position << " ; " << (ofPoint)i->size << " parent object is " << name; }
+                
                 if ( (i->zIndex == current_zIndex) &&
                     (i->pointInclusionTest(touchPosition - innerTransform) &&
                      (i->visible))
