@@ -13,6 +13,7 @@
 #include "ofMain.h"
 #include "UIFingerManager.h"
 #include "UIInputReceiver.h"
+#include "UIShape.h"
 
 class UIGestureRecognizer: public UIInputReceiver {
 public:

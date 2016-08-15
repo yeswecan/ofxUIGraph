@@ -15,6 +15,7 @@ public:
         ofRegisterKeyEvents(this);
         ofRegisterMouseEvents(this);
         ofAddListener(ofEvents().windowResized, this, &UICanvas::windowResized);
+        ofAddListener(ofEvents().update, this, &UICanvas::update);
         ofRegisterTouchEvents(this);
         
         name = "canvas";
@@ -25,8 +26,8 @@ public:
     bool initialized = false;
     
     
-    void update() {  // doesn't get called in release mode????
-        if (!initialized) { 
+    void update(ofEventArgs & args) {
+        if (!initialized) {
             size = ofPoint(ofGetWidth(), ofGetHeight());
             initialized = true;
         }

@@ -23,6 +23,10 @@ public:
         ofPoint offset;
         ofPoint draggedPoint;
         ofPoint initialPoint;
+        
+        ofPoint initialGlobalPoint;
+        ofPoint currentGlobalPoint;
+        ofPoint dragDelta;
         int dragFinger = 0;
         UIDragGestureRecognizer *recognizer;
     };
@@ -41,10 +45,14 @@ public:
         gestureAbandoned = false;
 
         if ((!dragStarted)&&(!gestureAbandoned)) {
+            
+            // Starting dragging
+            
             UIFingerManager::captureFinger(finger, this);
             dragStarted = true;
             dragFinger = finger;
             
+            initialGlobalPoint = UIObject::fingerPositions[finger];
             dragOffset = UIObject::fingerPositions[finger] - offset;
             initialPoint = point;
             
@@ -57,6 +65,9 @@ public:
     
     // The same as above
     bool touchDrag(ofPoint point, int finger) {
+        
+        // Drag update
+        
         if ((!gestureAbandoned) && (finger == dragFinger)) {
             gestureUpdated(getArgs(point));
             
@@ -67,7 +78,11 @@ public:
     };
     
     // The same too
+    
     bool touchUp(ofPoint point, int finger) {
+        
+        // Probably drag ends
+        
         if ((dragStarted) && (finger == dragFinger)) {
             UIFingerManager::releaseFinger(finger);
             gestureEnded(getArgs(point));
@@ -99,7 +114,7 @@ public:
     
     int dragFinger;
     bool dragStarted, gestureAbandoned, lazyMode;
-    ofPoint dragOffset, lastRegisteredPoint, initialPoint;
+    ofPoint dragOffset, lastRegisteredPoint, initialPoint, initialGlobalPoint;
 
     
 private:
@@ -110,6 +125,9 @@ private:
         result.draggedPoint = p;
         result.dragFinger = dragFinger;
         result.recognizer = this;
+        result.initialGlobalPoint = initialGlobalPoint;
+        result.dragDelta = UIObject::fingerPositions[dragFinger] - initialGlobalPoint;
+        result.currentGlobalPoint = UIObject::fingerPositions[dragFinger];
         result.initialPoint = initialPoint;
         
         return result;
