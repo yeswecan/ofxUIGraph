@@ -38,18 +38,18 @@ public:
         
         update = [&](UIObject *o) {
             if (!initialized) {
-                ofLog() << "parent name:" << parent->name;
+//                ofLog() << "parent name:" << parent->name;
                 for (int i = 0; i < parent->children.size(); i++) {
-                    ofLog() << i << "." << parent->children[i]->name;
+//                    ofLog() << i << "." << parent->children[i]->name;
                 }
                 
                 parent->addChild(openedDropDownList);
                 
                 for (int i = 0; i < parent->children.size(); i++) {
-                    ofLog() << i << "." << parent->children[i]->name;
+//                    ofLog() << i << "." << parent->children[i]->name;
                 }
                 
-                ofLog() << "top parent name = " << getTopParent()->name;
+//                ofLog() << "top parent name = " << getTopParent()->name;
                 getTopParent()->addCallback(TOUCH_DOWN, [this]() {
                         if ((this->timeFromEvent(TOUCH_DOWN) > 50) && (this->openedDropDownList->timeFromEvent(TOUCH_DOWN) > 50)) {
                             if ((UIKeyboardEventReciever::getFocusedObject() == this) &&
@@ -188,7 +188,7 @@ public:
             UIDragGestureRecognizer *dgr = args.recognizer;
             float maximum = rowHeight * getRowsCount() - openedDropDownList->size.y;
             ofPoint cOffset = UIObject::fingerPositions[dgr->dragFinger] - dgr->dragOffset - openedDropDownList->getTransformedPosition();
-            ofLog() << (dgr->offset);
+//            ofLog() << (dgr->offset);
             
             float moveAmount = cOffset.y * ((rowHeight * getRowsCount()) / openedDropDownList->size.y);
             float newInnerTransform = initialInnerTransform.y - moveAmount;
@@ -198,7 +198,7 @@ public:
         };
          
         dgr->gestureEnded = [&](DragGestureArgs args) {
-            ofLog() << "gesture ended!";
+//            ofLog() << "gesture ended!";
         };
         
         openedDropDownList->gestureRecognizer = dgr;
@@ -230,7 +230,7 @@ public:
     }
     
     void keyPressed(int key) {
-        ofLog() << "dropdown recieved " << key;
+//        ofLog() << "dropdown recieved " << key;
         
         // TODO:
         // move the scroll view to the point where it can be seen

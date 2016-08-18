@@ -47,7 +47,7 @@ public:
         useFbo = true;
         
         touchDownC = [&](UIObject *o)->bool {
-            ofLog() << "FOCUSING ON ME";
+//            ofLog() << "FOCUSING ON ME";
             if (focusedObject != this) cursorPosition = innards.length();
             focusOnObject(this);
             return true;
@@ -153,7 +153,7 @@ public:
     }
     
     void insertSymbol(char input) {
-        ofLog() << "inserting " << input;
+//        ofLog() << "inserting " << input;
         innards.insert(innards.begin() + cursorPosition, input);
         cursorPosition++;
         
@@ -165,7 +165,7 @@ public:
     }
     
     void keyPressed(int key) {
-        ofLog() << "key pressed " << key;
+//        ofLog() << "key pressed " << key;
         
         if (key == OF_KEY_LEFT) {
             if (cursorPosition > 0) cursorPosition--;

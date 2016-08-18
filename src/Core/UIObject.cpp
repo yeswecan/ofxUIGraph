@@ -10,7 +10,7 @@ std::map<int, bool> UIObject::fingerIsDown;
 ///             Building UI
 
 UIObject* UIObject::addChild(UIObject *object)  {
-    ofLog() << "adding " << object->name << "...";
+//    ofLog() << "adding " << object->name << "...";
     object->parent = this;
     if (object->zIndex == 0)
         object->zIndex = zIndex++;
@@ -45,7 +45,7 @@ void UIObject::updateCycle(bool updateAnimator) {
         if (children[i]->useFbo) {
             if ((children[i]->myFbo.getWidth() != children[i]->size.x) ||
                 (children[i]->myFbo.getHeight() != children[i]->size.y)) {
-                ofLog() << "resizing fbo; current size x = " << children[i]->myFbo.getWidth() << " , required = " << children[i]->size.x;
+//                ofLog() << "resizing fbo; current size x = " << children[i]->myFbo.getWidth() << " , required = " << children[i]->size.x;
                 children[i]->setFboSize(ofPoint(children[i]->size.x, children[i]->size.y));
             }
         }

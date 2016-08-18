@@ -24,7 +24,7 @@ public:
     UIConstraint(ConstraintStyle style, UIShape *ref, float arg) {
 		init();
         if ((style == LEFT) || (style == TOP) || (style == INSIDE_BOTTOM) || (style == INSIDE_RIGHT)) {
-            ofLog() << "ERROR IN CONSTRAINT: insufficient references";
+//            ofLog() << "ERROR IN CONSTRAINT: insufficient references";
             constraintStyle = VALUE;
             argument = arg;
         }

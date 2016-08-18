@@ -29,7 +29,7 @@ public:
         ofPoint position, size;
         
         void sayHi() {
-            ofLog() << "hi from struct's function!";
+//            ofLog() << "hi from struct's function!";
         };
     };
     
@@ -222,7 +222,7 @@ public:
     bool useFbo;
     
     void setFboSize(ofPoint size) {
-        ofLog() << "myFbo size x = " << myFbo.getWidth() << " ; required = " << size.x;
+//        ofLog() << "myFbo size x = " << myFbo.getWidth() << " ; required = " << size.x;
         myFbo.allocate(size.x, size.y);
     };
     
@@ -294,7 +294,9 @@ public:
         while ((!result) && (current_zIndex >= 0) ) {
             for (auto i: children) {
                 
-                if (type == TOUCH_DOWN) { ofLog() << i->name << " ; " << (ofPoint)i->position << " ; " << (ofPoint)i->size << " parent object is " << name; }
+//                if (type == TOUCH_DOWN) {
+//                    ofLog() << i->name << " ; " << (ofPoint)i->position << " ; " << (ofPoint)i->size << " parent object is " << name;
+//                }
                 
                 if ( (i->zIndex == current_zIndex) &&
                     (i->pointInclusionTest(touchPosition - innerTransform) &&
@@ -306,7 +308,7 @@ public:
                         i->transformedPosition = transformedPosition + i->position;
                     
                          if (type == TOUCH_DOWN) {
-                            ofLog() << "touched DOWN " << i->name << " with zIndex = "<< current_zIndex;
+//                            ofLog() << "touched DOWN " << i->name << " with zIndex = "<< current_zIndex;
                              
                              if (i->gestureRecognizer != NULL) {
                                  i->gestureRecognizer->offset = fingerPositions[fingerIndex] - (touchPosition - i->position);
@@ -315,15 +317,11 @@ public:
                              
                              if ((!i->touchBroadcast(touchPosition - i->position, type, fingerIndex, level + 1)) ||
                                   (i->children.size() == 0)) {
-                                ofLog() << "touchbroadcast on " << i->name << " = false";
                                 if ((i->touchDown()) || (i->touchDownC(i))) {
-                                    ofLog() << " --- touch down ended up inside " << i->name;
                                     i->registerEvent(TOUCH_DOWN, i);
                                     return true;
                                 }
                              } else {
-                                ofLog() << "touch down ended up inside children of " << i->name;
-                                ofLog() << i->name << " has " << i->children.size() << " children";
                                 return true;
                              }
                         }
@@ -340,7 +338,6 @@ public:
                                     return true;
                                 }
                             } else {
-                                ofLog() << "touch down ended up inside children of " << i->name;
                                 return true;
                             }
                         }
@@ -379,7 +376,6 @@ public:
                                     return true;
                                 }
                             } else {
-                                ofLog() << "touch move ended up inside children of " << i->name;
                                 return true;
                             }
                         }
@@ -429,7 +425,6 @@ public:
         size = siz;
         name = nam;
         zIndex = z_index;
-        ofLog() << "created object " << nam << " with zindex = " << zIndex;
     }
 
     UIObject (string nam, ofPoint pos, ofPoint siz, bool fbo) {
