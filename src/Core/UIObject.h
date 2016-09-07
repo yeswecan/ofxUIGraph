@@ -294,9 +294,6 @@ public:
         while ((!result) && (current_zIndex >= 0) ) {
             for (auto i: children) {
                 
-//                if (type == TOUCH_DOWN) {
-//                    ofLog() << i->name << " ; " << (ofPoint)i->position << " ; " << (ofPoint)i->size << " parent object is " << name;
-//                }
                 
                 if ( (i->zIndex == current_zIndex) &&
                     (i->pointInclusionTest(touchPosition - innerTransform) &&
@@ -310,17 +307,23 @@ public:
                          if (type == TOUCH_DOWN) {
 //                            ofLog() << "touched DOWN " << i->name << " with zIndex = "<< current_zIndex;
                              
+                             bool gestureRecognizerTookOver = false;
                              if (i->gestureRecognizer != NULL) {
                                  i->gestureRecognizer->offset = fingerPositions[fingerIndex] - (touchPosition - i->position);
-                                 i->gestureRecognizer->touchDown(touchPosition - i->position, fingerIndex);
+                                 gestureRecognizerTookOver = i->gestureRecognizer->touchDown(touchPosition - i->position, fingerIndex);
                              }
+                             
+                             if (gestureRecognizerTookOver)
+                                 return true;
                              
                              if ((!i->touchBroadcast(touchPosition - i->position, type, fingerIndex, level + 1)) ||
                                   (i->children.size() == 0)) {
+                                 
                                 if ((i->touchDown()) || (i->touchDownC(i))) {
                                     i->registerEvent(TOUCH_DOWN, i);
                                     return true;
                                 }
+                                 
                              } else {
                                 return true;
                              }
