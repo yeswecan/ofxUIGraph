@@ -13,7 +13,7 @@
 
 #include "ofMain.h"
 #include <functional>
-#include "UIGestureRecognizer.h"
+#include "UIBaseGestureRecognizer.h"
 #include "UIFingerManager.h"
 #include "UIShape.h"
 #include "UIConstraintSolver.h"
@@ -244,7 +244,7 @@ public:
     
     
     
-    UIGestureRecognizer* gestureRecognizer; // should be vector of recognizers instead
+    UIBaseGestureRecognizer* gestureRecognizer; // should be vector of recognizers instead
     
     static std::map<int, ofPoint> fingerPositions;
     static std::map<int, bool> fingerIsDown;
@@ -277,7 +277,7 @@ public:
         }
         
         if (isFingerCaptured(fingerIndex)) {
-            UIGestureRecognizer* gs = ((UIGestureRecognizer*)getRecognizerForFinger(fingerIndex));
+            UIBaseGestureRecognizer* gs = ((UIBaseGestureRecognizer*)getRecognizerForFinger(fingerIndex));
             if (type == TOUCH_DOWN) {
                 gs->touchDown(touchPosition, fingerIndex);
             }

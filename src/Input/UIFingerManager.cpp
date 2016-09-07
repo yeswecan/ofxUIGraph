@@ -7,7 +7,7 @@
 //
 
 #include <stdio.h>
-#include "UIGestureRecognizer.h"
+#include "UIBaseGestureRecognizer.h"
 #include "UIFingerManager.h"
 
 std::map<int, UIInputReceiver*> UIFingerManager::capturedFingers;

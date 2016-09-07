@@ -10,7 +10,7 @@
 #define UIGestureRecognizerServer_h
 
 #include "UIInputReceiver.h"
-#include "UIGestureRecognizer.h"
+#include "UIBaseGestureRecognizer.h"
 #include "ofMain.h"
 
 

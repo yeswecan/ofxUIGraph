@@ -15,9 +15,9 @@
 #include "UIInputReceiver.h"
 #include "UIShape.h"
 
-class UIGestureRecognizer: public UIInputReceiver {
+class UIBaseGestureRecognizer: public UIInputReceiver {
 public:
-    UIGestureRecognizer(){
+    UIBaseGestureRecognizer(){
 
 	}
     

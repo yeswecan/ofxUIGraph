@@ -9,9 +9,9 @@
 #ifndef UIDragGestureRecognizer_h
 #define UIDragGestureRecognizer_h
 
-#include "UIGestureRecognizer.h"
+#include "UIBaseGestureRecognizer.h"
 
-class UIDragGestureRecognizer: public UIGestureRecognizer {
+class UIDragGestureRecognizer: public UIBaseGestureRecognizer {
 public:
     UIDragGestureRecognizer() {
         dragStarted = false;
