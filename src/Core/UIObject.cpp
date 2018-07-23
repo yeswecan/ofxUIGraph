@@ -101,6 +101,9 @@ void UIObject::drawCycle() {
         }
         czIndex++;
     }
+    
+    drawOverlay(this);
+
 }
 
 ///             Utils

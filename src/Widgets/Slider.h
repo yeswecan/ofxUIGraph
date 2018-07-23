@@ -21,6 +21,7 @@ public:
 		font = NULL;
 		init();
     }
+    
     EditableField(string nam) {
 		bgColor = ofColor(0);
 		textColor = ofColor(255);
@@ -63,6 +64,9 @@ public:
             
             ofSetColor(textColor);
             string whatToDisplay = innards;
+            if (showAsInt) {
+                whatToDisplay = ofToString(ofToInt(innards));
+            }
             if (getFocusedObject() == this) {
                 if ((ofGetElapsedTimef() - (int)ofGetElapsedTimef()) < 0.5) {
                     ofLine(15 + getCursorVisualPosition() + 2, 2, 15 + getCursorVisualPosition() + 2, size.y - 4);
@@ -111,35 +115,70 @@ public:
         init();
     }
     
+    EditableField(ofPoint position_, ofPoint size_) {
+        bgColor = ofColor(0);
+        font = NULL;
+        
+        position = position_;
+        size = size_;
+        
+        init();
+    }
+
+    EditableField(ofPoint position_, ofPoint size_, float minimumValue, float maximumValue, bool isInt = false) {
+        bgColor = ofColor(0);
+        font = NULL;
+        
+        position = position_;
+        size = size_;
+        
+        minValue = minimumValue;
+        maxValue = maximumValue;
+        
+        init();
+        
+        numbersOnly = true;
+        setupForDragging();
+        
+        innards = ofToString(minimumValue);
+        
+        showAsInt = isInt;
+    }
+    
+    float getAsFloat() {
+        return ofToFloat(innards);
+    }
+
+
+    float getAsInt() {
+        return ofToInt(innards);
+    }
+
 	void clamp() {
 	   if (ofToFloat(innards) < minValue) innards = ofToString(minValue);
       if (ofToFloat(innards) > maxValue) innards = ofToString(maxValue);
       cursorPosition = innards.length();
-	}    
+	}
     
-    void setupForDragging(float min, float max) {
-        numbersOnly = true;
-        
-        minValue = min;
-        maxValue = max;
-        
+    void setupForDragging() {
         UIDragGestureRecognizer *dgr = new UIDragGestureRecognizer();
         
         dgr->gestureStarted = [&](DragGestureArgs args) {
             numWhenDragStarted = ofToFloat(innards);
-            fingerPositionWhenDragStarted = UIObject::fingerPositions[dgr->dragFinger];
+            int df = ((UIDragGestureRecognizer*)gestureRecognizer)->dragFinger;
+            fingerPositionWhenDragStarted = UIObject::fingerPositions[df];
         };
         
         dgr->gestureUpdated = [&](DragGestureArgs args) {
             UIDragGestureRecognizer *dgr = args.recognizer;
-			if (dgr->dragFinger != 0) return; //hmmm
+            if (dgr->dragFinger != 0) return; //hmmm
             //int diff = (UIObject::fingerPositions[dgr->dragFinger] - fingerPositionWhenDragStarted).y;
             float diff = (((fingerPositionWhenDragStarted - UIObject::fingerPositions[dgr->dragFinger]).x)
                           / size.x) * (maxValue - minValue);
-					
+            
             this->innards = ofToString(numWhenDragStarted - diff);
-				this->clamp();
-           
+            this->clamp();
+            
             onValueChange(this);
             
         };
@@ -149,7 +188,16 @@ public:
         
         gestureRecognizer = dgr;
         
-        if (innards == "") innards = "0";
+        if (innards == "") innards = "0"; // what the fuck is this
+    }
+    
+    void setupForDragging(float min, float max) {
+        numbersOnly = true;
+        
+        minValue = min;
+        maxValue = max;
+        
+        setupForDragging();
     }
     
     void insertSymbol(char input) {
@@ -214,6 +262,7 @@ public:
         innards = ofToString((float)value);
     }
     
+    bool showAsInt = false;
     
     function<void(EditableField*)> onValueChange;
     function<void(EditableField*)> onEnter;

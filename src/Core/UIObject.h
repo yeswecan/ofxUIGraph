@@ -18,6 +18,7 @@
 #include "UIShape.h"
 #include "UIConstraintSolver.h"
 #include "LiquidEvent.h"
+#include "FunctionStack.h"
 
 class UIObject: public UIFingerManager, public UIShape, public UIConstraintSolver {
 public:
@@ -33,22 +34,24 @@ public:
         };
     };
     
-    function<void(UIObject*)> draw;
+    FunctionStack<void(UIObject*), void, UIObject*> draw;
 
-    function<void(UIObject*)> update;
+    FunctionStack<void(UIObject*), void, UIObject*> drawOverlay;
+
+    FunctionStack<void(UIObject*), void, UIObject*> update;
     
-    function<bool()> touchDown;
-    function<void()> mouseMove;
+    FunctionStack<bool(), bool> touchDown;
+    FunctionStack<void(), void> mouseMove;
 
-    function<bool()> touchUp;
+    FunctionStack<bool(), bool> touchUp;
     
-    function<bool(UIObject*)> touchDragC;
+    FunctionStack<bool(UIObject*), bool, UIObject*> touchDragC;
     
-    function<bool(UIObject*)> touchDownC;
+    FunctionStack<bool(UIObject*), bool, UIObject*> touchDownC;
 
-    function<bool(UIObject*)> touchUpC;
+    FunctionStack<bool(UIObject*), bool, UIObject*> touchUpC;
 
-    function<void(UIObject*)> mouseMoveC;
+    FunctionStack<void(UIObject*), void, UIObject*> mouseMoveC;
 
     
     ///         Common callbacks
@@ -214,7 +217,6 @@ public:
     // TODO: rename clipping test (it's really a shape's point inclusion test)
     bool clippingTest(UIShape *i);
 
-    
     ofFbo getFbo() { return myFbo;}
     ofFbo* getFboPointer() { return &myFbo;}
     
@@ -240,8 +242,6 @@ public:
         }
         return maxZIndex;
     };
-    
-    
     
     
     UIBaseGestureRecognizer* gestureRecognizer; // should be vector of recognizers instead
@@ -441,7 +441,18 @@ public:
             myFbo.allocate(ofGetWidth(), ofGetHeight());
         useFbo = fbo;
     }
-    
+
+    UIObject (ofPoint pos, ofPoint siz, bool fbo) {
+        init();
+        position = pos;
+        size = siz;
+        // WARNING!! Test case
+        // TODO: test this
+        if (fbo)
+            myFbo.allocate(ofGetWidth(), ofGetHeight());
+        useFbo = fbo;
+    }
+
     UIObject (string nam, ofPoint pos, ofPoint siz, int z_index, bool fbo) {
         init();
         position = pos;
@@ -482,7 +493,7 @@ public:
     }
     
     UIObject *parent;
-    vector<UIObject*> children;
+    std::vector<UIObject*> children;
     long lastTouched;
     ofPointF lastTouchedPosition; // <-- probably unused
     string name;
