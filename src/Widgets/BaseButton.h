@@ -101,11 +101,6 @@ public:
     ofShader circleShader;
     ofMesh screenMesh;
     
-    // Data helpers
-    
-    std::map<std::string, std::string> stringMap;
-    std::map<std::string, bool> boolMap;
-    std::map<std::string, int> intMap;
 
 };
 #endif /* BaseButton_h */

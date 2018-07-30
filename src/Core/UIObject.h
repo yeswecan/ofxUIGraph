@@ -389,6 +389,13 @@ public:
         }
         return false;
     }
+    
+    ///                Data holders
+    
+    std::map<std::string, std::string> stringMap;
+    std::map<std::string, bool> boolMap;
+    std::map<std::string, int> intMap;
+
 
     ///                Convenience
     
